@@ -34,8 +34,7 @@ stages:
       inputs:
         command: 'build'
         projects: 
-          diplomapp.sln
-        workingDirectory: diplomapp
+          diplomapp\diplomapp.sln        
         arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
