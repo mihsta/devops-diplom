@@ -6,42 +6,46 @@
 trigger:
 - main
 
-pool:
-  vmImage: windows-2022
+stages:
+- stage: CI  # name of the stage, A-Z, a-z, 0-9, and underscore
+  displayName: CI  # friendly name to display in the UI 
+  
+  pool:
+    vmImage: windows-2022
 
-variables:
-  buildConfiguration: 'Release'
-  backendProjectPath: 'diplomapp/backend/backend.csproj'
-  frontendProjectPath: 'diplomapp/frontend/frontend.csproj'
+  variables:
+    buildConfiguration: 'Release'
+    backendProjectPath: 'diplomapp/backend/backend.csproj'
+    frontendProjectPath: 'diplomapp/frontend/frontend.csproj'
 
-
-
-steps:
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'mihsta'
-    scannerMode: 'MSBuild'
-    projectKey: 'mihsta_devops-diplom'
+  jobs: 
+  - job: Build
+    steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'mihsta'
+        scannerMode: 'MSBuild'
+        projectKey: 'mihsta_devops-diplom'
     
-- task: VSTest@2
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    codeCoverageEnabled: true
+    - task: VSTest@2
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\*test*.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        codeCoverageEnabled: true
 
-- script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
+    - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
+      displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
 
-- script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
+    - script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
+      displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
 
-- task: SonarCloudAnalyze@1
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+    - task: SonarCloudAnalyze@1
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
     
