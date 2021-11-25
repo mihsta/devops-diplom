@@ -52,7 +52,17 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
-  
+
+# Publish projects to specified folder.
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet publish'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'    
+        zipAfterPublish: true
+        modifyOutputPath: true
   # - stage: CD
   #  jobs:
   #  - job: B1
