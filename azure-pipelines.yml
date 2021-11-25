@@ -35,7 +35,7 @@ steps:
 - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
   displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
 
-#- task: SonarCloudAnalyze@1
+- task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
