@@ -11,7 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  backendProjectPath: '.\diplomapp\backend\backend.csproj'
+  backendProjectPath: 'diplomapp/backend/backend.csproj'
 
 steps:
 - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
