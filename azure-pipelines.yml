@@ -15,24 +15,42 @@ stages:
 
   variables:
     buildConfiguration: 'Release'
-    backendProjectPath: 'diplomapp/backend/backend.csproj'
-    frontendProjectPath: 'diplomapp/frontend/frontend.csproj'
 
   jobs: 
   - job: Builds
     steps:
+
+#SonarCloudPrepare
     - task: SonarCloudPrepare@1
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
         scannerMode: 'MSBuild'
         projectKey: 'mihsta_devops-diplom'
-    
-    - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
-      displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
 
-    - script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
-      displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
+#Build solution .NET CORE
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: |
+          diplomapp\diplomapp.sln
+         # diplomapp\frontend\frontend.csproj
+         # diplomapp\backend\backend.csproj
+         # diplomapp\frontend.Tests\frontend.Tests.csproj
+         # diplomapp\backend.Tests\backend.Tests.csproj
+        arguments: --configuration $(buildConfiguration)
+
+    #- script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
+    #  displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
+
+    #- script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
+    #  displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
+
+# Run tests and auto publish test results.
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        workingDirectory: diplomapp
     - task: VSTest@2
       inputs:
         testSelector: 'testAssemblies'
