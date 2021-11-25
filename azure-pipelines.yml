@@ -87,12 +87,24 @@ stages:
 
 - stage: Docker
   jobs:
-  - job: B1
+  - job: Dockerize
     steps:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce'
-      
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'diplomapp'
+          command: 'buildAndPush'
+          Dockerfile: 'frontend/Dockerfile'
+        
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'diplomapp'
+          command: 'buildAndPush'
+          Dockerfile: 'backend/Dockerfile'
 
   #  - job: B2
 # - stage: QA
