@@ -53,16 +53,38 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
-# Publish projects to specified folder.
+# Publish projects to specified folder.    
     - task: DotNetCoreCLI@2
-      displayName: 'dotnet publish'
+      displayName: dotnet publish backend --configuration $(buildConfiguration)
+      name: PublishBackendProject
       inputs:
-        command: 'publish'
+        command: publish
+        projects: '**/backend/**/*.csproj'
         publishWebProjects: false
-        projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'    
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
         zipAfterPublish: true
-        modifyOutputPath: true
+
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish frontend --configuration $(buildConfiguration)
+      name: PublishFrontendProject
+      inputs:
+        command: publish
+        projects: '**/Frontend/**/*.csproj'
+        publishWebProjects: false
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
+        zipAfterPublish: true
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
+        ArtifactName: 'Frontend_LatestBuild'
+        publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
+        ArtifactName: 'Backend_LatestBuild'
+        publishLocation: 'Container'
+
   # - stage: CD
   #  jobs:
   #  - job: B1
