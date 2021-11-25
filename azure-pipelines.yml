@@ -13,6 +13,19 @@ variables:
   buildConfiguration: 'Release'
   backendProjectPath: 'diplomapp/backend/backend.csproj'
 
+
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'mihsta'
+    scannerMode: 'MSBuild'
+    projectKey: 'diplomapp'
+    projectName: 'diplomapp'
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+    
 - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
   displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
