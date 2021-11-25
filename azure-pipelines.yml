@@ -23,9 +23,16 @@ steps:
     projectKey: 'diplomapp'
     projectName: 'diplomapp'
 
+
+- script: dotnet sonarscanner begin  /o:"mihsta" /k:"dipmlomapp"  /d:sonar.host.url="https://sonarcloud.io"
+  displayName: dotnet sonarscanner begin
+
 - script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
   displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
-- task: SonarCloudAnalyze@1
+
+- script: dotnet sonarscanner end
+  displayName: dotnet sonarscanner end
+
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
