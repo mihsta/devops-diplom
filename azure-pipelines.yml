@@ -33,8 +33,9 @@ stages:
       displayName: dotnet build
       inputs:
         command: 'build'
-        projects: |
-          diplomapp\diplomapp.sln         
+        projects: 
+          diplomapp.sln
+        workingDirectory: diplomapp
         arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
