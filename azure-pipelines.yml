@@ -30,36 +30,21 @@ stages:
 
 #Build solution .NET CORE
     - task: DotNetCoreCLI@2
+      displayName: dotnet build
       inputs:
         command: 'build'
         projects: |
-          diplomapp\diplomapp.sln
-         # diplomapp\frontend\frontend.csproj
-         # diplomapp\backend\backend.csproj
-         # diplomapp\frontend.Tests\frontend.Tests.csproj
-         # diplomapp\backend.Tests\backend.Tests.csproj
-        arguments: --configuration $(buildConfiguration)
-
-    #- script: dotnet build $(backendProjectPath) --configuration $(buildConfiguration)
-    #  displayName: 'dotnet build $(backendProjectPath) $(buildConfiguration)'
-
-    #- script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
-    #  displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
+          diplomapp\diplomapp.sln         
+        arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
     - task: DotNetCoreCLI@2
+      displayName: dotnet test
       inputs:
         command: 'test'
         workingDirectory: diplomapp
-    - task: VSTest@2
-      inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\*test*.dll
-          !**\*TestAdapter.dll
-          !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-        codeCoverageEnabled: true
+        arguments: '/p:CollectCoverage=true'
+
     - task: SonarCloudAnalyze@1
     - task: SonarCloudPublish@1
       inputs:
