@@ -48,7 +48,7 @@ stages:
     - task: SonarCloudPublish@1
       inputs:
         pollingTimeoutSec: '300'
-- stage: CD
-  jobs:
-  - job: B1
-  - job: B2
+#- stage: CD
+#  jobs:
+#  - job: B1
+#  - job: B2
