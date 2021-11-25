@@ -20,7 +20,7 @@ steps:
     SonarCloud: 'SonarCloud'
     organization: 'mihsta'
     scannerMode: 'MSBuild'
-    projectKey: 'mihsta'
+    projectKey: 'mihsta_devops-diplom'
     
 - task: VSTest@2
   inputs:
