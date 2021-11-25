@@ -85,9 +85,15 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-  # - stage: CD
-  #  jobs:
-  #  - job: B1
+- stage: Docker
+  jobs:
+  - job: B1
+    steps:
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
+      
+
   #  - job: B2
 # - stage: QA
 #  dependsOn: CI
