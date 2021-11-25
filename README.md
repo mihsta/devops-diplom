@@ -5,5 +5,10 @@ https://dev.azure.com/mihsta/DevOps-diploma/_dashboards
 
 
 #docker
-docker build -f .\backend\Dockerfile -t backend .
-docker build -f .\frontend\Dockerfile -t frontend .
+```bash
+docker build -f '.\Dockerfile.backend' -t backend . --no-cache
+docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
+
+dockercompose up
+dockercompose down
+```

@@ -94,14 +94,14 @@ stages:
         containerRegistry: 'docker_hub'
         repository: 'diplomapp'
         command: 'buildAndPush'
-        Dockerfile: 'diplomapp/frontend/Dockerfile'
+        Dockerfile: 'Dockerfile.frontend'
       
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_hub'
         repository: 'diplomapp'
         command: 'buildAndPush'
-        Dockerfile: 'diplomapp/backend/Dockerfile'
+        Dockerfile: 'Dockerfile.backend'
 
   #  - job: B2
 # - stage: QA
