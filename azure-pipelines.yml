@@ -38,22 +38,27 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
-    - task: DotNetCoreCLI@2
-      displayName: dotnet test
-      inputs:
-        command: 'test'
-        workingDirectory: diplomapp
-        arguments: '/p:CollectCoverage=true'
+- stage: QA
+  jobs:
+  - job: Tests
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: dotnet test
+        inputs:
+          command: 'test'
+          workingDirectory: diplomapp
+          arguments: '/p:CollectCoverage=true'
 
-    - task: SonarCloudAnalyze@1
-    - task: SonarCloudPublish@1
-      inputs:
-        pollingTimeoutSec: '300'
-    - task: sonarcloud-buildbreaker@2
-      inputs:
-        SonarCloud: 'SonarCloud'
-        organization: 'mihsta'
-#- stage: CD
-#  jobs:
-#  - job: B1
-#  - job: B2
+      - task: SonarCloudAnalyze@1
+      - task: SonarCloudPublish@1
+        inputs:
+          pollingTimeoutSec: '300'
+      - task: sonarcloud-buildbreaker@2
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: 'mihsta'
+  
+  # - stage: CD
+  #  jobs:
+  #  - job: B1
+  #  - job: B2
