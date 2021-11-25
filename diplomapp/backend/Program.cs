@@ -1,3 +1,4 @@
+using backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,10 @@ app.MapGet("/weatherforecast", [EnableCors("allowAny")] () =>
 
 app.Run();
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
+namespace backend
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
+    {
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }    
 }
