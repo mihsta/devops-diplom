@@ -33,9 +33,6 @@ stages:
 
     - script: dotnet build $(frontendProjectPath) --configuration $(buildConfiguration)
       displayName: 'dotnet build $(frontendProjectPath) $(buildConfiguration)'
-
-  - job: Testing
-    steps:
     - task: VSTest@2
       inputs:
         testSelector: 'testAssemblies'
