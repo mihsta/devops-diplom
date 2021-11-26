@@ -109,10 +109,10 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp'
+          repository: 'mihailsta/diplomapp_frontend'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.frontend'
-          tags: frontened
+          tags: latest
           addPipelineData: false
           addBaseImageData: false
 
@@ -120,10 +120,10 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp'
+          repository: 'mihailsta/diplomapp_backend'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.backend'
-          tags: backend
+          tags: latest
           addPipelineData: false
           addBaseImageData: false
   #  - job: B2
