@@ -85,23 +85,27 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-
-    - task: DockerInstaller@0
-      inputs:
-        dockerVersion: '17.09.0-ce'
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker_hub'
-        repository: 'diplomapp'
-        command: 'buildAndPush'
-        Dockerfile: 'Dockerfile.frontend'
-      
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker_hub'
-        repository: 'diplomapp'
-        command: 'buildAndPush'
-        Dockerfile: 'Dockerfile.backend'
+- stage: Docker
+  jobs:
+    - job:
+      steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'diplomapp'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.frontend'
+        
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'diplomapp'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.backend'
 
   #  - job: B2
 # - stage: QA
