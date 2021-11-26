@@ -18,7 +18,6 @@ stages:
   variables:
     buildConfiguration: 'Release'
 
-
   jobs: 
   - job: Build
     steps:
@@ -41,9 +40,6 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
-  - job: QA
-    dependsOn: Build
-    steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet test
       inputs:
@@ -62,7 +58,7 @@ stages:
 
 
   - job: Publish
-    dependsOn: QA    
+    dependsOn: Build    
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
 # Publish projects to specified folder.    
