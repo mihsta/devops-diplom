@@ -2,7 +2,7 @@
 # Build and test ASP.NET Core projects targeting .NET Core.
 parameters:
   - name: doPublish
-    default: true
+    default: false
     type: boolean
     
 trigger:
@@ -97,9 +97,9 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-- stage: Docker
+- stage: CI/Docker
   jobs:
-    - job:
+    - job: buildAndPush
       steps:
       - checkout: self
       - task: DockerInstaller@0
