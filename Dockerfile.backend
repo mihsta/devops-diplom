@@ -2,14 +2,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
 WORKDIR /src
-COPY ["diplomapp/backend", "backend/"]
-WORKDIR "/src/backend"
-RUN dotnet restore "backend.csproj"
-RUN dotnet build "backend.csproj" -c Release -o /app/build
-
-FROM build AS publish
+COPY ["diplomapp/backend", "."]
 RUN dotnet publish "backend.csproj" -c Release -o /app/publish
 
 FROM base AS final
