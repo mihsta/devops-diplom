@@ -9,8 +9,8 @@ trigger:
 - main
 
 stages:
-- stage: CI  # name of the stage, A-Z, a-z, 0-9, and underscore
-  displayName: CI  # friendly name to display in the UI 
+- stage: CI_Build  # name of the stage, A-Z, a-z, 0-9, and underscore
+  displayName: CI_Build  # friendly name to display in the UI 
   
   pool:
     vmImage: windows-2022
@@ -24,6 +24,7 @@ stages:
 
 #SonarCloudPrepare
     - task: SonarCloudPrepare@1
+      displayName: SonarCloud Prepare
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
@@ -48,10 +49,13 @@ stages:
         arguments: '/p:CollectCoverage=true'
 
     - task: SonarCloudAnalyze@1
+      displayName: SonarCloud Analyze
     - task: SonarCloudPublish@1
+      displayName: SonarCloud Publish
       inputs:
         pollingTimeoutSec: '300'
     - task: sonarcloud-buildbreaker@2
+      displayName: SonarCloud Breaker
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
@@ -94,6 +98,7 @@ stages:
         publishLocation: 'Container'
 
 - stage: CI_Docker
+  displayName: CI_Docker
   jobs:
     - job: buildAndPush
       steps:
