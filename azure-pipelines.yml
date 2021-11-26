@@ -92,14 +92,14 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_hub'
-        repository: 'diplomapp'
+        repository: 'mihailsta/diplomapp'
         command: 'buildAndPush'
         Dockerfile: 'Dockerfile.frontend'
       
     - task: Docker@2
       inputs:
         containerRegistry: 'docker_hub'
-        repository: 'diplomapp'
+        repository: 'mihailsta/diplomapp'
         command: 'buildAndPush'
         Dockerfile: 'Dockerfile.backend'
 
