@@ -37,8 +37,12 @@
 ```bash
 docker build -f '.\Dockerfile.backend' -t backend . --no-cache
 docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
-dockercompose up
-dockercompose down
+
+docker-compose down
+docker image prune -f
+docker-compose pull
+docker-compose up --detach
+
 ```
 
 </p>
