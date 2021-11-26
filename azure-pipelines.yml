@@ -2,7 +2,7 @@
 # Build and test ASP.NET Core projects targeting .NET Core.
 parameters:
   - name: doPublish
-    default: false
+    default: true
     type: boolean
     
 trigger:
@@ -112,6 +112,10 @@ stages:
           repository: 'mihailsta/diplomapp'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.frontend'
+          tags: frontened
+          addPipelineData: false
+          addBaseImageData: false
+
 
       - task: Docker@2
         inputs:
@@ -119,7 +123,9 @@ stages:
           repository: 'mihailsta/diplomapp'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.backend'
-
+          tags: backend
+          addPipelineData: false
+          addBaseImageData: false
   #  - job: B2
 # - stage: QA
 #  dependsOn: CI
