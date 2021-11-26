@@ -5,6 +5,8 @@
 
 **[CI/CD PIPELINE](https://dev.azure.com/mihsta/DevOps-diploma/_build?definitionId=10&_a=summary)**
 
+**[DOCKER](https://hub.docker.com/repositories)**
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mihsta_devops-diplom&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mihsta_devops-diplom) [![Build Status](https://dev.azure.com/mihsta/DevOps-diploma/_apis/build/status/mihsta.devops-diplom?branchName=main)](https://dev.azure.com/mihsta/DevOps-diploma/_build/latest?definitionId=10&branchName=main)
 
 <details>
