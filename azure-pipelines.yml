@@ -1,6 +1,10 @@
 # ASP.NET Core
 # Build and test ASP.NET Core projects targeting .NET Core.
-
+parameters:
+  - name: doPublish
+    default: true
+    type: boolean
+    
 trigger:
 - main
 
@@ -14,8 +18,9 @@ stages:
   variables:
     buildConfiguration: 'Release'
 
+
   jobs: 
-  - job: Builds
+  - job: Build
     steps:
 
 #SonarCloudPrepare
@@ -36,7 +41,9 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
 
 # Run tests and auto publish test results.
-
+  - job: QA
+    dependsOn: Build
+    steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet test
       inputs:
@@ -53,6 +60,11 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
+
+  - job: Publish
+    dependsOn: QA    
+    condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
+    steps:
 # Publish projects to specified folder.    
     - task: DotNetCoreCLI@2
       displayName: dotnet publish backend --configuration $(buildConfiguration)
