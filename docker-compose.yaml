@@ -1,12 +1,16 @@
 version: '3.1'
 services:
   frontend:
-    image: mihailsta/diplomapp_frontened
+    image: mihailsta/diplomapp_frontend
     restart: unless-stopped
     ports:
       - 8080:80   
   backend:
-    image: mihailsta/diplomapp_backend 
+    image: mihailsta/diplomapp_backend
     restart: always
     ports:
       - 5030:80    
+  watchtower:
+    image: containrrr/watchtower 
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
