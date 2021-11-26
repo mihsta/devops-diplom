@@ -2,7 +2,7 @@
 # Build and test ASP.NET Core projects targeting .NET Core.
 parameters:
   - name: doPublish
-    default: true
+    default: false
     type: boolean
     
 trigger:
