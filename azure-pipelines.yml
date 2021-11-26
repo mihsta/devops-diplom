@@ -93,7 +93,7 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-- stage: CI/Docker
+- stage: CI_Docker
   jobs:
     - job: buildAndPush
       steps:
