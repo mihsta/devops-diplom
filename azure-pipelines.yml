@@ -9,7 +9,7 @@ trigger:
 - main
 
 stages:
-- stage: CI_Build  # name of the stage, A-Z, a-z, 0-9, and underscore
+- stage: CIBuild  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: CI_Build  # friendly name to display in the UI 
   
   pool:  
@@ -60,7 +60,7 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
-  - job: Docker_buildAndPush
+  - job: DockerBuildAndPush
     pool:  
       vmImage: Ubuntu 20.04
     steps:
@@ -88,7 +88,7 @@ stages:
           addPipelineData: false
           addBaseImageData: false
 
-  - job: Publish-Artifacts
+  - job: PublishArtifacts
     dependsOn: Build    
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
