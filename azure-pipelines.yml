@@ -39,9 +39,9 @@ stages:
       displayName: dotnet build
       inputs:
         command: 'build'
-        projects: 
-          .\diplomapp\frontend\frontend.csproj
-          .\diplomapp\frontend\.Tests\frontend.Tests.csproj          
+        projects: |
+          **/frontend.csproj
+          **/frontend.Tests.csproj
         arguments: '--configuration $(buildConfiguration)'
 
   #  Run tests and auto publish test results.
@@ -50,9 +50,9 @@ stages:
       inputs:
         command: 'test'
         workingDirectory: diplomapp
-        projects: 
-          .\diplomapp\frontend\frontend.csproj
-          .\diplomapp\frontend\.Tests\frontend.Tests.csproj 
+        projects: |
+          **/frontend.csproj
+          **/frontend.Tests.csproj
         arguments: '/p:CollectCoverage=true'
 
   #  SonarCloudAnalyze
@@ -129,9 +129,9 @@ stages:
       displayName: dotnet build
       inputs:
         command: 'build'
-        projects: 
-          .\diplomapp\backend\backend.csproj
-          .\diplomapp\backend\backend.Tests.csproj
+        projects: |
+          **/backend.csproj
+          **/backend.Tests.csproj
         arguments: '--configuration $(buildConfiguration)'
 
   # Run tests and auto publish test results.
@@ -140,9 +140,9 @@ stages:
       inputs:
         command: 'test'
         workingDirectory: diplomapp
-        projects: 
-          diplomapp\backend\backend.csproj
-          diplomapp\backend.Tests\backend.Tests.csproj
+        projects: |
+          **/backend.csproj
+          **/backend.Tests.csproj
         arguments: '/p:CollectCoverage=true'
     - task: SonarCloudAnalyze@1
       displayName: SonarCloud Analyze
