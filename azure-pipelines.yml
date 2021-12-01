@@ -7,22 +7,23 @@ parameters:
     
 trigger:
 - main
-
 stages:
+# Start CI
 - stage: CIBuild  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: CI_Build  # friendly name to display in the UI 
-  
-  pool:  
-    vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
-
   variables:
     buildConfiguration: 'Release'
-
+# jobs CI
   jobs: 
-  - job: Build
+
+
+ # BuildFrontEnd
+  - job: BuildFrontEnd
+    pool:  
+      vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
     steps:
 
-#SonarCloudPrepare
+  # SonarCloudPrepare
     - task: SonarCloudPrepare@1
       displayName: SonarCloud Prepare
       inputs:
@@ -31,23 +32,28 @@ stages:
         scannerMode: 'MSBuild'
         projectKey: 'mihsta_devops-diplom'
 
-#Build solution .NET CORE
+  # Build solution .NET CORE
     - task: DotNetCoreCLI@2
       displayName: dotnet build
       inputs:
         command: 'build'
         projects: 
-          diplomapp\diplomapp.sln        
+          frontend\frontend.csproj
+          frontend.Tests\frontend.Tests.csproj          
         arguments: '--configuration $(buildConfiguration)'
 
-# Run tests and auto publish test results.
+  #  Run tests and auto publish test results.
     - task: DotNetCoreCLI@2
       displayName: dotnet test
       inputs:
         command: 'test'
         workingDirectory: diplomapp
+        projects: 
+          frontend\frontend.csproj
+          frontend.Tests\frontend.Tests.csproj 
         arguments: '/p:CollectCoverage=true'
 
+  #  SonarCloudAnalyze
     - task: SonarCloudAnalyze@1
       displayName: SonarCloud Analyze
     - task: SonarCloudPublish@1
@@ -60,6 +66,8 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
+
+ # Docker Build Frontend
   - job: DockerBuildAndPush
     pool:  
       vmImage: Ubuntu 20.04
@@ -78,6 +86,16 @@ stages:
           addPipelineData: false
           addBaseImageData: false
 
+
+ # Docker Build BackEnd
+  - job: DockerBuildAndPush
+    pool:  
+      vmImage: Ubuntu 20.04
+    steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce' 
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
@@ -92,7 +110,57 @@ stages:
     dependsOn: Build    
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
-# Publish projects to specified folder.    
+
+
+ # BuildBackEnd
+  - job: BuildBackEnd
+    pool:  
+      vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
+    steps:
+
+  # SonarCloudPrepare
+    - task: SonarCloudPrepare@1
+      displayName: SonarCloud Prepare
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'mihsta'
+        scannerMode: 'MSBuild'
+        projectKey: 'mihsta_devops-diplom'
+
+  # Build solution .NET CORE
+    - task: DotNetCoreCLI@2
+      displayName: dotnet build
+      inputs:
+        command: 'build'
+        projects: 
+          backend\backend.csproj
+          backend.Tests\backend.Tests.csproj
+        arguments: '--configuration $(buildConfiguration)'
+
+  # Run tests and auto publish test results.
+    - task: DotNetCoreCLI@2
+      displayName: dotnet test
+      inputs:
+        command: 'test'
+        workingDirectory: diplomapp
+        projects: 
+          backend\backend.csproj
+          backend.Tests\backend.Tests.csproj
+        arguments: '/p:CollectCoverage=true'
+    - task: SonarCloudAnalyze@1
+      displayName: SonarCloud Analyze
+    - task: SonarCloudPublish@1
+      displayName: SonarCloud Publish
+      inputs:
+        pollingTimeoutSec: '300'
+    - task: sonarcloud-buildbreaker@2
+      displayName: SonarCloud Breaker
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'mihsta'
+
+
+ # Publish projects to specified folder.    
     - task: DotNetCoreCLI@2
       displayName: dotnet publish backend --configuration $(buildConfiguration)
       name: PublishBackendProject
@@ -124,6 +192,8 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
+
+# Stage end CI process
 - stage: CI_end
   displayName: CI_end
   jobs:
