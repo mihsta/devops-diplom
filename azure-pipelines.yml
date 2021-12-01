@@ -13,6 +13,8 @@ stages:
   displayName: CI_Build  # friendly name to display in the UI 
   variables:
     buildConfiguration: 'Release'
+
+
 # jobs CI
   jobs: 
 
@@ -68,7 +70,7 @@ stages:
 
 
  # Docker Build Frontend
-  - job: DockerBuildAndPush
+  - job: DockerBuildAndPushFrontEnd
     pool:  
       vmImage: Ubuntu 20.04
     steps:
@@ -88,7 +90,7 @@ stages:
 
 
  # Docker Build BackEnd
-  - job: DockerBuildAndPush
+  - job: DockerBuildAndPushBackend
     pool:  
       vmImage: Ubuntu 20.04
     steps:
@@ -105,11 +107,6 @@ stages:
           tags: latest
           addPipelineData: false
           addBaseImageData: false
-
-  - job: PublishArtifacts
-    dependsOn: Build    
-    condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
-    steps:
 
 
  # BuildBackEnd
@@ -160,7 +157,13 @@ stages:
         organization: 'mihsta'
 
 
- # Publish projects to specified folder.    
+ # Publish projects to specified folder.
+  - job: PublishArtifacts
+    dependsOn: 
+    - BuildFrontEnd
+    - BuildBackEnd
+    condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
+    steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet publish backend --configuration $(buildConfiguration)
       name: PublishBackendProject
