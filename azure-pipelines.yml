@@ -12,8 +12,8 @@ stages:
 - stage: CI_Build  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: CI_Build  # friendly name to display in the UI 
   
-  pool:
-    vmImage: windows-2022
+  pool:  
+    vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
 
   variables:
     buildConfiguration: 'Release'
@@ -60,8 +60,35 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
+  - job: Docker_buildAndPush
+    pool:  
+      vmImage: Ubuntu 20.04
+    steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-frontend'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.frontend'
+          tags: latest
+          addPipelineData: false
+          addBaseImageData: false
 
-  - job: Publish
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-backend'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.backend'
+          tags: latest
+          addPipelineData: false
+          addBaseImageData: false
+
+  - job: Publish-Artifacts
     dependsOn: Build    
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
@@ -97,59 +124,5 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-  - job: Docker_buildAndPush
-    steps:
-      - checkout: self
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce'
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-frontend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.frontend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
-
-
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-backend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.backend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
-
-- stage: CI_Docker
-  displayName: CI_Docker
-  jobs:
-    - job: buildAndPush
-      steps:
-      - checkout: self
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce'
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-frontend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.frontend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
-
-
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-backend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.backend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
+- stage: CI_end
+  displayName: CI_end  
