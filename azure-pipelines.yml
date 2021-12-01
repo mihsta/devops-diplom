@@ -19,8 +19,8 @@ stages:
   jobs: 
 
 
- # BuildFrontEnd
-  - job: BuildFrontEnd
+ # Build
+  - job: Build
     pool:  
       vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
     steps:
@@ -110,8 +110,7 @@ stages:
  # Publish projects to specified folder.
   - job: PublishArtifacts
     dependsOn: 
-    - BuildFrontEnd
-    - BuildBackEnd
+    - Build
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
     - checkout: self
