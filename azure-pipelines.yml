@@ -125,4 +125,6 @@ stages:
         publishLocation: 'Container'
 
 - stage: CI_end
-  displayName: CI_end  
+  displayName: CI_end
+  jobs:
+    - job:
