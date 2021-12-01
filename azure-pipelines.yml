@@ -40,8 +40,8 @@ stages:
       inputs:
         command: 'build'
         projects: 
-          frontend\frontend.csproj
-          frontend.Tests\frontend.Tests.csproj          
+          diplomapp\frontend\frontend.csproj
+          diplomapp\frontend.Tests\frontend.Tests.csproj          
         arguments: '--configuration $(buildConfiguration)'
 
   #  Run tests and auto publish test results.
@@ -51,8 +51,8 @@ stages:
         command: 'test'
         workingDirectory: diplomapp
         projects: 
-          frontend\frontend.csproj
-          frontend.Tests\frontend.Tests.csproj 
+          diplomapp\frontend\frontend.csproj
+          diplomapp\frontend.Tests\frontend.Tests.csproj 
         arguments: '/p:CollectCoverage=true'
 
   #  SonarCloudAnalyze
@@ -130,8 +130,8 @@ stages:
       inputs:
         command: 'build'
         projects: 
-          backend\backend.csproj
-          backend.Tests\backend.Tests.csproj
+          diplomapp\backend\backend.csproj
+          diplomapp\backend.Tests\backend.Tests.csproj
         arguments: '--configuration $(buildConfiguration)'
 
   # Run tests and auto publish test results.
@@ -141,8 +141,8 @@ stages:
         command: 'test'
         workingDirectory: diplomapp
         projects: 
-          backend\backend.csproj
-          backend.Tests\backend.Tests.csproj
+          diplomapp\backend\backend.csproj
+          diplomapp\backend.Tests\backend.Tests.csproj
         arguments: '/p:CollectCoverage=true'
     - task: SonarCloudAnalyze@1
       displayName: SonarCloud Analyze
