@@ -88,9 +88,7 @@ stages:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce' 
-      pool:
-  vmImage: 'Ubuntu-16.04'
-steps:
+      
       - task: Cache@2
         displayName: Cache task
         inputs:
