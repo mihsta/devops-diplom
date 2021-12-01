@@ -24,7 +24,7 @@ stages:
     pool:  
       vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
     steps:
-
+    - checkout: self
   # SonarCloudPrepare
     - task: SonarCloudPrepare@1
       displayName: SonarCloud Prepare
@@ -40,8 +40,8 @@ stages:
       inputs:
         command: 'build'
         projects: 
-          diplomapp\frontend\frontend.csproj
-          diplomapp\frontend.Tests\frontend.Tests.csproj          
+          .\diplomapp\frontend\frontend.csproj
+          .\diplomapp\frontend\.Tests\frontend.Tests.csproj          
         arguments: '--configuration $(buildConfiguration)'
 
   #  Run tests and auto publish test results.
@@ -51,8 +51,8 @@ stages:
         command: 'test'
         workingDirectory: diplomapp
         projects: 
-          diplomapp\frontend\frontend.csproj
-          diplomapp\frontend.Tests\frontend.Tests.csproj 
+          .\diplomapp\frontend\frontend.csproj
+          .\diplomapp\frontend\.Tests\frontend.Tests.csproj 
         arguments: '/p:CollectCoverage=true'
 
   #  SonarCloudAnalyze
@@ -114,7 +114,7 @@ stages:
     pool:  
       vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
     steps:
-
+    - checkout: self
   # SonarCloudPrepare
     - task: SonarCloudPrepare@1
       displayName: SonarCloud Prepare
@@ -130,8 +130,8 @@ stages:
       inputs:
         command: 'build'
         projects: 
-          diplomapp\backend\backend.csproj
-          diplomapp\backend.Tests\backend.Tests.csproj
+          .\diplomapp\backend\backend.csproj
+          .\diplomapp\backend\backend.Tests.csproj
         arguments: '--configuration $(buildConfiguration)'
 
   # Run tests and auto publish test results.
@@ -164,6 +164,7 @@ stages:
     - BuildBackEnd
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
+    - checkout: self
     - task: DotNetCoreCLI@2
       displayName: dotnet publish backend --configuration $(buildConfiguration)
       name: PublishBackendProject
