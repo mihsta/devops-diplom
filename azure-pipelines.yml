@@ -28,7 +28,7 @@ stages:
   # Get pipeline cache
     - task: Cache@2
       inputs:
-        key: 'nuget | "$(Agent.OS)" | $(Build.SourcesDirectory)/packages.lock.json'
+        key: 'nuget | "$(Agent.OS)" | $(Build.SourcesDirectory)/**/packages.lock.json'
         restoreKeys: |
           nuget | "$(Agent.OS)"
           nuget
@@ -88,6 +88,9 @@ stages:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce' 
+      pool:
+  vmImage: 'Ubuntu-16.04'
+steps:
       - task: Cache@2
         displayName: Cache task
         inputs:
