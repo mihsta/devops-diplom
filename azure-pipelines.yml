@@ -7,22 +7,25 @@ parameters:
     
 trigger:
 - main
-
 stages:
-- stage: CI_Build  # name of the stage, A-Z, a-z, 0-9, and underscore
+# Start CI
+- stage: CIBuild  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: CI_Build  # friendly name to display in the UI 
-  
-  pool:
-    vmImage: windows-2022
-
   variables:
     buildConfiguration: 'Release'
 
-  jobs: 
-  - job: Build
-    steps:
 
-#SonarCloudPrepare
+# jobs CI
+  jobs: 
+
+
+ # Build
+  - job: Build
+    pool:  
+      vmImage: windows-2022 #https://docs.microsoft.com/ru-ru/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
+    steps:
+    - checkout: self
+  # SonarCloudPrepare
     - task: SonarCloudPrepare@1
       displayName: SonarCloud Prepare
       inputs:
@@ -31,23 +34,26 @@ stages:
         scannerMode: 'MSBuild'
         projectKey: 'mihsta_devops-diplom'
 
-#Build solution .NET CORE
+  # Build solution .NET CORE
     - task: DotNetCoreCLI@2
       displayName: dotnet build
       inputs:
         command: 'build'
-        projects: 
-          diplomapp\diplomapp.sln        
+        projects: |
+          **/*.sln
         arguments: '--configuration $(buildConfiguration)'
 
-# Run tests and auto publish test results.
+  #  Run tests and auto publish test results.
     - task: DotNetCoreCLI@2
       displayName: dotnet test
       inputs:
         command: 'test'
         workingDirectory: diplomapp
+        projects: |
+          **/*.sln
         arguments: '/p:CollectCoverage=true'
 
+  #  SonarCloudAnalyze
     - task: SonarCloudAnalyze@1
       displayName: SonarCloud Analyze
     - task: SonarCloudPublish@1
@@ -60,12 +66,54 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
+ # Docker Build Frontend
+  - job: DockerBuildAndPushFrontEnd
+    pool:  
+      vmImage: Ubuntu 20.04
+    steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce'
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-frontend'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.frontend'
+          tags: latest
+          addPipelineData: false
+          addBaseImageData: false
 
-  - job: Publish
-    dependsOn: Build    
+
+ # Docker Build BackEnd
+  - job: DockerBuildAndPushBackend
+    pool:  
+      vmImage: Ubuntu 20.04
+    steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce' 
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-backend'
+          command: 'buildAndPush'
+          Dockerfile: 'Dockerfile.backend'
+          tags: latest
+          addPipelineData: false
+          addBaseImageData: false
+
+
+
+ # Publish projects to specified folder.
+  - job: PublishArtifacts
+    dependsOn: 
+    - Build
     condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
     steps:
-# Publish projects to specified folder.    
+    - checkout: self
     - task: DotNetCoreCLI@2
       displayName: dotnet publish backend --configuration $(buildConfiguration)
       name: PublishBackendProject
@@ -97,38 +145,9 @@ stages:
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
-- stage: CI_Docker
-  displayName: CI_Docker
+
+# Stage end CI process
+- stage: CI_end
+  displayName: CI_end
   jobs:
-    - job: buildAndPush
-      steps:
-      - checkout: self
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce'
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-frontend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.frontend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
-
-
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-backend'
-          command: 'buildAndPush'
-          Dockerfile: 'Dockerfile.backend'
-          tags: latest
-          addPipelineData: false
-          addBaseImageData: false
-  #  - job: B2
-# - stage: QA
-#  dependsOn: CI
-#  jobs:
-#  - job: Tests
-#    steps:
+    - job:
