@@ -28,7 +28,7 @@ stages:
   # Get pipeline cache
     - task: Cache@2
       inputs:
-        key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
+        key: 'nuget | "$(Agent.OS)" | diplomapp/*/packages.lock.json'
         restoreKeys: |
           nuget | "$(Agent.OS)"
           nuget
@@ -79,15 +79,33 @@ stages:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
 
- # Docker Build Frontend
-  - job: DockerBuildAndPushFrontEnd
+ # Docker Build
+  - job: DockerBuildAndPushBackend
     pool:  
       vmImage: Ubuntu 20.04
     steps:
       - checkout: self
       - task: DockerInstaller@0
         inputs:
-          dockerVersion: '17.09.0-ce'
+          dockerVersion: '17.09.0-ce' 
+      - task: Cache@2
+        displayName: Cache task
+        inputs:
+          key: 'docker | "$(Agent.OS)" | cache'
+          path: $(Pipeline.Workspace)/docker
+          cacheHitVar: CACHE_RESTORED                #Variable to set to 'true' when the cache is restored
+        
+      - script: |
+          docker load -i $(Pipeline.Workspace)/docker/cache.tar
+        displayName: Docker restore
+        condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
+
+      - script: |
+          mkdir -p $(Pipeline.Workspace)/docker
+          docker save -o $(Pipeline.Workspace)/docker/cache.tar cache
+        displayName: Docker save
+        condition: and(not(canceled()), or(failed(), ne(variables.CACHE_RESTORED, 'true')))
+
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
@@ -97,17 +115,6 @@ stages:
           tags: latest
           addPipelineData: false
           addBaseImageData: false
-
-
- # Docker Build BackEnd
-  - job: DockerBuildAndPushBackend
-    pool:  
-      vmImage: Ubuntu 20.04
-    steps:
-      - checkout: self
-      - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce' 
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
