@@ -5,7 +5,7 @@ parameters:
     default: false
     type: boolean
   - name: doAnalyze
-    default: false
+    default: true
     type: boolean
     
 trigger:
@@ -66,6 +66,7 @@ stages:
 
   #  Run tests and auto publish test results.
     - task: DotNetCoreCLI@2
+      condition: and(succeeded(), eq('${{ parameters.doAnalyze }}', 'true'))
       displayName: dotnet test
       inputs:
         command: 'test'
@@ -104,16 +105,17 @@ stages:
         displayName: Cache task
         inputs:
           key: 'docker | "$(Agent.OS)" | cache'
-          path: $(Pipeline.Workspace)
+          path: $(Pipeline.Workspace)/docker
           cacheHitVar: CACHE_RESTORED                #Variable to set to 'true' when the cache is restored
         
       - script: |
-          docker load -i $(Pipeline.Workspace)/cache.tar
+          docker load -i $(Pipeline.Workspace)/docker/cache.tar
         displayName: Docker restore
         condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
 
-      - script: |          
-          docker save -o $(Pipeline.Workspace)/cache.tar cache
+      - script: |
+          mkdir -p $(Pipeline.Workspace)/docker
+          docker save -o $(Pipeline.Workspace)/docker/cache.tar cache
         displayName: Docker save
         condition: and(not(canceled()), or(failed(), ne(variables.CACHE_RESTORED, 'true')))
 
