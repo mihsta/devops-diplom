@@ -98,7 +98,7 @@ stages:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce' 
-      - script: GITCOMMIT=git rev-parse --short HEAD
+      - script: GITCOMMIT="git rev-parse --short HEAD"
 
       - task: Docker@2
         inputs:
