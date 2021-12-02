@@ -45,7 +45,7 @@ stages:
 
   # SonarCloudPrepare
     - task: SonarCloudPrepare@1
-      condition: and(succeeded(), eq('${{ parameters.doAnalize }}', 'true'))
+      condition: and(succeeded(), eq('${{ parameters.doAnalyze }}', 'true'))
       displayName: SonarCloud Prepare
       inputs:
         SonarCloud: 'SonarCloud'
@@ -76,15 +76,15 @@ stages:
 
   #  SonarCloudAnalyze
     - task: SonarCloudAnalyze@1
-      condition: and(succeeded(), eq('${{ parameters.doAnalize }}', 'true'))
+      condition: and(succeeded(), eq('${{ parameters.doAnalyze }}', 'true'))
       displayName: SonarCloud Analyze
     - task: SonarCloudPublish@1
-      condition: and(succeeded(), eq('${{ parameters.doAnalize }}', 'true'))
+      condition: and(succeeded(), eq('${{ parameters.doAnalyze }}', 'true'))
       displayName: SonarCloud Publish
       inputs:
         pollingTimeoutSec: '300'
     - task: sonarcloud-buildbreaker@2
-      condition: and(succeeded(), eq('${{ parameters.doAnalize }}', 'true'))
+      condition: and(succeeded(), eq('${{ parameters.doAnalyze }}', 'true'))
       displayName: SonarCloud Breaker
       inputs:
         SonarCloud: 'SonarCloud'
