@@ -41,7 +41,7 @@ docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
 dotnet publish .\diplomapp\backend\backend.csproj -c Release
 dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
 
-dotnet sln .\diplomapp\diplomapp.sln list
+dotnet pusln .\diplomapp\diplomapp.sln list
 
 docker-compose down
 docker image prune -f
