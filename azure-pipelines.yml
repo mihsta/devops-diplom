@@ -17,10 +17,8 @@ stages:
   variables:
     buildConfiguration: 'Release'
 
-
 # jobs CI
   jobs: 
-
 
  # Build
   - job: Build
@@ -57,9 +55,9 @@ stages:
       
     - task: DotNetCoreCLI@2
       condition: ne(variables.CACHE_RESTORED, 'true')
-      displayName: dotnet publish
+      displayName: dotnet build
       inputs:
-        command: 'publish'
+        command: 'build'
         projects: |
           **/*.sln
         arguments: '--configuration $(buildConfiguration)'
@@ -90,16 +88,6 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/diplomapp/frontend/bin/Release/net6.0/publish/wwwroot'
-        ArtifactName: 'Frontend_LatestBuild'
-        publishLocation: 'Container'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/diplomapp/backend/bin/Release/publish'
-        ArtifactName: 'Backend_LatestBuild'
-        publishLocation: 'Container'
 
  # Docker Build
   - job: DockerBuildAndPushBackend
@@ -111,7 +99,6 @@ stages:
         inputs:
           dockerVersion: '17.09.0-ce' 
       
-
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
@@ -130,47 +117,6 @@ stages:
           tags: latest
           addPipelineData: false
           addBaseImageData: false
-
-
-
- # Publish projects to specified folder.
-  - job: PublishArtifacts
-    dependsOn: 
-    - Build
-    condition: and(succeeded(), eq('${{ parameters.doPublish }}', 'true'))
-    steps:
-    - checkout: self
-    - task: DotNetCoreCLI@2
-      displayName: dotnet publish backend --configuration $(buildConfiguration)
-      name: PublishBackendProject
-      inputs:
-        command: publish
-        projects: '**/backend/**/*.csproj'
-        publishWebProjects: false
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
-        zipAfterPublish: true
-
-    - task: DotNetCoreCLI@2
-      displayName: dotnet publish frontend --configuration $(buildConfiguration)
-      name: PublishFrontendProject
-      inputs:
-        command: publish
-        projects: '**/Frontend/**/*.csproj'
-        publishWebProjects: false
-        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
-        zipAfterPublish: true
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
-        ArtifactName: 'Frontend_LatestBuild'
-        publishLocation: 'Container'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
-        ArtifactName: 'Backend_LatestBuild'
-        publishLocation: 'Container'
-
 
 # Stage end CI process
 - stage: CI_end
