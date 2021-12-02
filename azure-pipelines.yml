@@ -98,8 +98,8 @@ stages:
     steps:
       - checkout: self
       - task: DockerInstaller@0
-        inputs:
-          dockerVersion: '17.09.0-ce' 
+       # inputs:
+          #dockerVersion: '17.09.0-ce' 
       
       - task: Cache@2
         displayName: Cache task
@@ -111,14 +111,14 @@ stages:
       - script: |
           docker load -i $(Pipeline.Workspace)/docker/cache.tar
         displayName: Docker restore
-        condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
+        #condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
 
       - script: |
           docker image list
           mkdir -p $(Pipeline.Workspace)/docker
           docker save -o $(Pipeline.Workspace)/docker/cache.tar cache
         displayName: Docker save
-        condition: and(not(canceled()), or(failed(), ne(variables.CACHE_RESTORED, 'true')))
+       # condition: and(not(canceled()), or(failed(), ne(variables.CACHE_RESTORED, 'true')))
 
       - task: Docker@2
         inputs:
