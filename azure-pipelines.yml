@@ -107,8 +107,8 @@ stages:
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.frontend'
           tags: |
-            - latest
-            - $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
+            latest
+            $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
           addPipelineData: false
           addBaseImageData: false
       - task: Docker@2
@@ -118,8 +118,8 @@ stages:
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.backend'
           tags: |
-            - latest
-            - $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
+            latest
+            $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
           addPipelineData: false
           addBaseImageData: false
 
