@@ -120,7 +120,9 @@ stages:
           repository: 'mihailsta/diplomapp-frontend'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.frontend'
-          tags: $(short_hash)
+          tags: 
+            latest
+            $(short_hash)
           addPipelineData: false
           addBaseImageData: false
       - task: Docker@2
