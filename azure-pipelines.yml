@@ -92,12 +92,12 @@ stages:
         organization: 'mihsta'
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/diplomapp/frontend/bin/Release/net6.0/publish/wwwroot'
         ArtifactName: 'Frontend_LatestBuild'
         publishLocation: 'Container'
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/diplomapp/backend/bin/Release/publish'
         ArtifactName: 'Backend_LatestBuild'
         publishLocation: 'Container'
 
