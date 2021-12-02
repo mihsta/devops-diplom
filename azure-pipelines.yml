@@ -117,28 +117,6 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-frontend'
-          command: 'build'
-          Dockerfile: 'Dockerfile.frontend'
-          tags: |
-            $(short_hash)
-            latest
-          addPipelineData: false
-          addBaseImageData: false
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
-          repository: 'mihailsta/diplomapp-frontend'
-          command: 'push'
-          Dockerfile: 'Dockerfile.frontend'
-          tags: |
-            $(short_hash)
-            latest
-          addPipelineData: false
-          addBaseImageData: false
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'docker_hub'
           repository: 'mihailsta/diplomapp-backend'
           command: 'build'
           Dockerfile: 'Dockerfile.backend'
@@ -158,6 +136,31 @@ stages:
             latest         
           addPipelineData: false
           addBaseImageData: false
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-frontend'
+          command: 'build'
+          Dockerfile: 'Dockerfile.frontend'
+          tags: |
+            $(short_hash)
+            latest
+          addPipelineData: false
+          addBaseImageData: false
+          
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-frontend'
+          command: 'push'
+          Dockerfile: 'Dockerfile.frontend'
+          tags: |
+            $(short_hash)
+            latest
+          addPipelineData: false
+          addBaseImageData: false
+
 
 
 # Stage end CI process
