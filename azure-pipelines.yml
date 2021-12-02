@@ -114,6 +114,7 @@ stages:
         condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
 
       - script: |
+          docker image list
           mkdir -p $(Pipeline.Workspace)/docker
           docker save -o $(Pipeline.Workspace)/docker/cache.tar cache
         displayName: Docker save
