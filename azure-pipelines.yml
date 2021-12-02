@@ -108,7 +108,7 @@ stages:
           Dockerfile: 'Dockerfile.frontend'
           tags: |
             - latest
-            - $GITCOMMIT
+            - $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
           addPipelineData: false
           addBaseImageData: false
       - task: Docker@2
@@ -117,7 +117,9 @@ stages:
           repository: 'mihailsta/diplomapp-backend'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.backend'
-          tags: latest
+          tags: |
+            - latest
+            - $(RELEASE.ARTIFACTS.[alias].BUILDNUMBER)
           addPipelineData: false
           addBaseImageData: false
 
