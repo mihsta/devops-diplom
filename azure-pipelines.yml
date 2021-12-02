@@ -98,14 +98,17 @@ stages:
       - task: DockerInstaller@0
         inputs:
           dockerVersion: '17.09.0-ce' 
-      
+      - script: GITCOMMIT=git rev-parse --short HEAD
+
       - task: Docker@2
         inputs:
           containerRegistry: 'docker_hub'
           repository: 'mihailsta/diplomapp-frontend'
           command: 'buildAndPush'
           Dockerfile: 'Dockerfile.frontend'
-          tags: latest
+          tags: |
+            - latest
+            - $GITCOMMIT
           addPipelineData: false
           addBaseImageData: false
       - task: Docker@2
