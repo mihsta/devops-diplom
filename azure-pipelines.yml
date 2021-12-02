@@ -57,9 +57,9 @@ stages:
       
     - task: DotNetCoreCLI@2
       condition: ne(variables.CACHE_RESTORED, 'true')
-      displayName: dotnet build
+      displayName: dotnet publish
       inputs:
-        command: 'build'
+        command: 'publish'
         projects: |
           **/*.sln
         arguments: '--configuration $(buildConfiguration)'
@@ -90,6 +90,16 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend_$(Build.BuildNumber)'
+        ArtifactName: 'Frontend_LatestBuild'
+        publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/backend_$(Build.BuildNumber)'
+        ArtifactName: 'Backend_LatestBuild'
+        publishLocation: 'Container'
 
  # Docker Build
   - job: DockerBuildAndPushBackend
@@ -98,27 +108,9 @@ stages:
     steps:
       - checkout: self
       - task: DockerInstaller@0
-       # inputs:
-          #dockerVersion: '17.09.0-ce' 
-      
-      - task: Cache@2
-        displayName: Cache task
         inputs:
-          key: 'docker | "$(Agent.OS)" | cache'
-          path: $(Pipeline.Workspace)/docker
-          cacheHitVar: CACHE_RESTORED                #Variable to set to 'true' when the cache is restored
-        
-      - script: |
-          docker load -i $(Pipeline.Workspace)/docker/cache.tar
-        displayName: Docker restore
-        #condition: and(not(canceled()), eq(variables.CACHE_RESTORED, 'true'))
-
-      - script: |
-          docker image list
-          mkdir -p $(Pipeline.Workspace)/docker
-          docker save -o $(Pipeline.Workspace)/docker/cache.tar cache
-        displayName: Docker save
-       # condition: and(not(canceled()), or(failed(), ne(variables.CACHE_RESTORED, 'true')))
+          dockerVersion: '17.09.0-ce' 
+      
 
       - task: Docker@2
         inputs:
