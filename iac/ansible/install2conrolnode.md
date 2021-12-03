@@ -13,9 +13,14 @@ sudo apt install openssh-server
 sudo systemctl status ssh
 sudo ufw allow ssh
 
+#fix ssh Authentication refused: bad ownership or modes for directory
+sudo chmod go-w ~/
+sudo chmod 700 ~/.ssh
+sudo chmod 600 ~/.ssh/authorized_keys
+
 ## CLUSTER_NODE: add ansible user sudoers
 sudo adduser ansible
-sudo echo "ansible ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ansible
+sudo echo "ansible ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ansible
 
 ## CONTROL_NODE: create envvar sshhost
 export SSH_HOST=ansible@ipaddress
@@ -26,7 +31,7 @@ sudo adduser ansible
 ssh-keygen -q -N "" -f /home/ansible/.ssh/id_rsa <<<y >/dev/null 2>&1  
 sudo ssh-copy-id -i /home/ansible/.ssh/id_rsa.pub $SSH_HOST -f
 
-## CONTROL_NODE: create envvar sshhost
+## CONTROL_NODE: create envvar sshhost test
 su ansible
 ssh $SSH_HOST
 

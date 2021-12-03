@@ -1,0 +1,5 @@
+---
+# handlers file for role_k8s
+- name: service restart
+  raw: vagrant --version
+

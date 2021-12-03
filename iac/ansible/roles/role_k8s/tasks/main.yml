@@ -1,0 +1,46 @@
+---
+# tasks file for role_k8s
+  - name: Install packages  
+    package: 
+      name: "{{ item }}" 
+      state: present
+      #state: absent
+    with_items:
+    - 'ansible'    
+    - 'virtualbox'
+    - 'vagrant'
+
+    
+  - name: Synchronization of src on the control machine to dest on the remote hosts
+    #https://docs.ansible.com/ansible/latest/collections/ansible/posix/synchronize_module.html#examples
+    ansible.posix.synchronize:
+      src: kubernetes-setup
+      dest: /home/ansible/vagrant/
+      delete: yes
+      recursive: yes
+    
+  - name: vagrantfile 
+    vars:
+      anonymous_enable: "YES"
+      local_enable: "YES"
+      write_enable: "YES"
+      anon_upload_enable: "YES"
+    template:
+      src: VagrantFile.j2
+      dest: /home/ansible/vagrant/VagrantFile
+      force: yes    
+    notify:
+     - service restart
+
+  - name: vagrantfile 
+    vars:
+      anonymous_enable: "YES"
+      local_enable: "YES"
+      write_enable: "YES"
+      anon_upload_enable: "YES"
+    template:
+      src: VagrantFile.j2
+      dest: /home/ansible/vagrant/Vagrantfile
+      force: yes    
+    notify:
+     - service restart   

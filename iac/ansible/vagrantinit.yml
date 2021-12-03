@@ -1,0 +1,15 @@
+---
+- name: install_cluster
+  hosts: all
+  user: ansible
+  become: yes
+  become_method: sudo
+  become_user: root
+  gather_facts: yes  
+  
+  tasks:
+# handlers file for role_k8s
+  - name: vagrant up
+    ansible.builtin.shell:
+      cmd: vagrant up --provision
+      chdir: /home/ansible/vagrant/
