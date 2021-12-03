@@ -1,5 +1,14 @@
 # ASP.NET Core
 # Build and test ASP.NET Core projects targeting .NET Core.
+
+# YAML file in the main branch
+schedules:
+- cron: "0 * * * *"
+  displayName: Scheduled build
+  branches:
+    include:
+    - main
+
 parameters:
   - name: doPublish
     default: false
