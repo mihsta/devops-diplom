@@ -69,3 +69,4 @@ TODO.md
 diploma_WS.code-workspace
 terraform/login.az
 terraform/terraform.tfvars
+iac/ansible/inventory

@@ -1,0 +1,37 @@
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/quickstart-connect-cluster?tabs=azure-cli
+#https://docs.microsoft.com/en-us/azure/app-service/manage-create-arc-environment?tabs=bash
+
+$CLUSTER_NAME="AzureArcDevOnPrem-t16"
+$RESOURCE_GROUP="AzureArcDev"
+
+#install azure cli
+#$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+az upgrade
+#Install the connectedk8s Azure CLI extension of version >= 1.2.0:
+az extension add --name connectedk8s
+#Install az providers
+az provider register --namespace Microsoft.Kubernetes
+az provider register --namespace Microsoft.KubernetesConfiguration
+az provider register --namespace Microsoft.ExtendedLocation
+#Create a resource group
+az group create --name $RESOURCE_GROUP --location WestEurope --output table
+#Connect an existing Kubernetes cluster
+az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+#Verify cluster connection
+az connectedk8s list --resource-group $RESOURCE_GROUP --output table
+#View Azure Arc agents for Kubernetes
+kubectl get deployments,pods -n azure-arc
+#Install the k8s-configuration Azure CLI extension of version >= 1.0.0:
+az extension add --name k8s-configuration
+#List all Azure Arc-enabled Kubernetes clusters without Azure Monitor extension
+az graph query -q "Resources | where type =~ 'Microsoft.Kubernetes/connectedClusters' | extend connectedClusterId = tolower(id) | project connectedClusterId | join kind = leftouter (KubernetesConfigurationResources | where type == 'microsoft.kubernetesconfiguration/extensions' | where properties.ExtensionType == 'microsoft.azuremonitor.containers' | parse tolower(id) with connectedClusterId '/providers/microsoft.kubernetesconfiguration/extensions' * | project connectedClusterId ) on connectedClusterId | where connectedClusterId1 == '' | project connectedClusterId"
+#List all Azure Arc-enabled Kubernetes resources
+az graph query -q "Resources | project id, subscriptionId, location, type, properties.agentVersion, properties.kubernetesVersion, properties.distribution, properties.infrastructure, properties.totalNodeCount, properties.totalCoreCount | where type =~ 'Microsoft.Kubernetes/connectedClusters'"
+$ARM_ID_CLUSTER=$(az connectedk8s show -n $CLUSTER_NAME -g $RESOURCE_GROUP --query id -o tsv)
+$ARM_ID_CLUSTER
+$AAD_ENTITY_OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
+$AAD_ENTITY_OBJECT_ID
+az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_ENTITY_OBJECT_ID --scope $ARM_ID_CLUSTER
+kubectl create serviceaccount admin-user
+kubectl create clusterrolebinding admin-user-binding --clusterrole cluster-admin --serviceaccount default:admin-user
+$TOKEN
