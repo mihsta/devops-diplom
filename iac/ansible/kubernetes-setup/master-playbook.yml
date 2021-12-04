@@ -87,11 +87,28 @@
       line: KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}
       create: yes
 
+#https://stackoverflow.com/questions/43794169/docker-change-cgroup-driver-to-systemd
+  - name: Creating a file /etc/docker/daemon.json
+    copy:
+      dest: "/etc/docker/daemon.json"
+      content: |
+        {
+          "exec-opts": ["native.cgroupdriver=systemd"]
+        }
+      force: yes
+
+  - name: Restart docker
+    service:
+      name: docker
+      daemon_reload: yes
+      state: restarted
+
   - name: Restart kubelet
     service:
       name: kubelet
       daemon_reload: yes
       state: restarted
+     
 
 #Step 2.4: Initialize the Kubernetes cluster with kubeadm using the below code (applicable only on master node).
   - name: Initialize the Kubernetes cluster using kubeadm
@@ -105,10 +122,18 @@
      - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
      - chown vagrant:vagrant /home/vagrant/.kube/config 
 
+  - name: Pause for 5 minutes to get pods up
+    pause:
+      minutes: 5
+
 #Step 2.6: Setup the container networking provider and the network policy engine using the below code.  - name: Install calico pod network
-  - name: Install calico pod network
+#https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
+  - name: Install calico tigera-operator
     become: false
-    command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+    command: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+  - name: Install calico custom-resources
+    become: false
+    command: kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
 
 #Step 2.7: Generate kube join command for joining the node to the Kubernetes cluster and store the command in the file named join-command.
   - name: Generate join command

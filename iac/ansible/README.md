@@ -1,6 +1,7 @@
 https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/
 #https://learn.hashicorp.com/collections/vagrant/getting-started
 #https://www.theurbanpenguin.com/provisioning-vagrant-with-ansible/
+https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
 
 ## ansible commands  
     ansible --version
@@ -16,9 +17,28 @@ https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant
 
     ansible-playbook -i inventory -v pb_install_cluster.yml
 ## vagrant commands
-    vagrant up --provision
-    vagrant reload
-    vagrant destroy
+    sudo vagrant up
+    
+    sudo vagrant ssh k8s-master
+
+    vagrant reload 
+    vagrant destroy --force
+
+## reset cluster 
+    sudo kubeadm reset --force
+    rm -rf .kube/
+    sudo rm -rf /etc/kubernetes/
+    sudo rm -rf /var/lib/kubelet/
+    sudo rm -rf /var/lib/etcd
+
+# docker daemon config for systemd from cgroupfs & restart 
+sudo cat <<EOF > /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+EOF
+sudo systemctl daemon-reload && systemctl restart docker
+
 ## regex
     https://regex101.com/
     https://question-it.com/questions/2028065/ansible-lineinfile-izmenit-stroku      

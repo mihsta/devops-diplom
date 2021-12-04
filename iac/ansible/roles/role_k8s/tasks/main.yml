@@ -10,6 +10,27 @@
     - 'virtualbox'
     - 'vagrant'
 
+#Installing kubectl using the below code.
+  - name: Add an apt signing key for Kubernetes
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+
+  - name: Adding apt repository for Kubernetes
+    apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+      filename: kubernetes.list
+
+  - name: Install Kubernetes binaries
+    apt: 
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+        - kubectl
+
     
   - name: Synchronization of src on the control machine to dest on the remote hosts
     #https://docs.ansible.com/ansible/latest/collections/ansible/posix/synchronize_module.html#examples
@@ -29,9 +50,7 @@
       src: VagrantFile.j2
       dest: /home/ansible/vagrant/VagrantFile
       force: yes    
-    notify:
-     - service restart
-
+    
   - name: vagrantfile 
     vars:
       anonymous_enable: "YES"
@@ -41,6 +60,9 @@
     template:
       src: VagrantFile.j2
       dest: /home/ansible/vagrant/Vagrantfile
-      force: yes    
-    notify:
-     - service restart   
+      force: yes      
+
+  - name: vagrant up
+    ansible.builtin.shell:
+      cmd: vagrant up
+      chdir: /home/ansible/vagrant/

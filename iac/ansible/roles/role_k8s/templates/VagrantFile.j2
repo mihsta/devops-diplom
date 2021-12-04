@@ -6,8 +6,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.provider "virtualbox" do |v|
         v.memory = 8192
-        v.cpus = 8
-        v.gui = true
+        v.cpus = 6
     end    
 
     config.vm.define "k8s-master" do |master|
@@ -21,6 +20,11 @@ Vagrant.configure("2") do |config|
             }
         end
     end
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 6144
+        v.cpus = 4
+    end    
 
     (1..N).each do |i|
         config.vm.define "node-#{i}" do |node|

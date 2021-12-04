@@ -89,17 +89,38 @@
       line: KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}
       create: yes
 
+#https://stackoverflow.com/questions/43794169/docker-change-cgroup-driver-to-systemd
+  - name: Creating a file /etc/docker/daemon.json
+    copy:
+      dest: "/etc/docker/daemon.json"
+      content: |
+        {
+          "exec-opts": ["native.cgroupdriver=systemd"]
+        }
+      force: yes
+
+  - name: Restart docker
+    service:
+      name: docker
+      daemon_reload: yes
+      state: restarted
+
   - name: Restart kubelet
     service:
       name: kubelet
       daemon_reload: yes
       state: restarted
+
 #Step 3.2: Join the nodes to the Kubernetes cluster using below code.
   - name: Copy the join command to server location
     copy: src=join-command dest=/tmp/join-command.sh mode=0777
 
   - name: Join the node to cluster
     command: sh /tmp/join-command.sh
+
+  - name: Pause for 2 minutes to get pods up
+    pause:
+      minutes: 2
 
 #Step 2.7: Setup a handler for checking Docker daemon using the below code.     
   handlers:
