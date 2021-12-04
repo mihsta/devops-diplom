@@ -6,8 +6,7 @@
       state: present
       #state: absent
     with_items:
-    - 'ansible'    
-    - 'virtualbox'
+    - 'ansible'
     - 'vagrant'
 
 #Installing kubectl using the below code.
@@ -62,7 +61,7 @@
       dest: /home/ansible/vagrant/Vagrantfile
       force: yes      
 
-  - name: vagrant up
+  - name: vagrant up vagrant up --provider virtualbox
     ansible.builtin.shell:
-      cmd: vagrant up
+      cmd: vagrant up vagrant up --provider virtualbox
       chdir: /home/ansible/vagrant/

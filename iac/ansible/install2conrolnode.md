@@ -13,6 +13,7 @@ sudo apt update
 sudo apt install openssh-server
 sudo systemctl status ssh
 sudo ufw allow ssh
+sudo apt install virtualbox
 ```
 ## CLUSTER_NODE: add ansible user sudoers
 ```
