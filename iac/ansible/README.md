@@ -1,9 +1,22 @@
+## info sources
+```
 https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/
 #https://learn.hashicorp.com/collections/vagrant/getting-started
 #https://www.theurbanpenguin.com/provisioning-vagrant-with-ansible/
 https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
-
-## ansible commands  
+```
+## k8s commands
+```
+#https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/
+kubectl config get-contexts
+kubectl config use-context 
+kubectl config delete-context 
+kubectl config unset users.gke_project_zone_name
+kubectl config unset contexts.aws_cluster1-kubernetes
+kubectl config unset clusters.foobar-baz
+```
+## ansible commands
+```  
     ansible --version
     ansible all -i inventory --list-hosts -v
     nano /etc/ansible/ansible.cfg
@@ -16,40 +29,27 @@ https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
     ansible-playbook pb_creating.yml --vault-password-file .ansible_pass  -v
 
     ansible-playbook -i inventory -v pb_install_cluster.yml
+```
 ## vagrant commands
-    sudo vagrant up
-    
+```
+    sudo vagrant up    
     sudo vagrant ssh k8s-master
-
-    vagrant reload 
-    vagrant destroy --force
-
-## reset cluster 
-    sudo kubeadm reset --force
-    rm -rf .kube/
-    sudo rm -rf /etc/kubernetes/
-    sudo rm -rf /var/lib/kubelet/
-    sudo rm -rf /var/lib/etcd
-
-# docker daemon config for systemd from cgroupfs & restart 
-sudo cat <<EOF > /etc/docker/daemon.json
-{
-  "exec-opts": ["native.cgroupdriver=systemd"]
-}
-EOF
-sudo systemctl daemon-reload && systemctl restart docker
+    sudo vagrant destroy --force
+```
 
 ## regex
+```
     https://regex101.com/
     https://question-it.com/questions/2028065/ansible-lineinfile-izmenit-stroku      
-    
+``` 
 ## git commands
-    ssh -vT git@github.com
-    git clone git@github.com:mihsta/ansible_lab.git 
-    git remote set-url origin git@github.com:mihsta/ansible_lab.git   
+```
+    ssh -vT git@github.com   
+    git remote set-url origin git@github.com:mihsta/reponame.git   
     git log --all --oneline --graph --decorate  
     git checkout env  
     git checkout main  
     git tag
     git push --tags
     git submodule init 
+```

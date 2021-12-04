@@ -1,38 +1,100 @@
+## CLUSTER_NODE: connect to Azure Arc
+```
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/quickstart-connect-cluster?tabs=azure-cli
 #https://docs.microsoft.com/en-us/azure/app-service/manage-create-arc-environment?tabs=bash
+#https://docs.microsoft.com/ru-ru/azure/architecture/hybrid/arc-hybrid-kubernetes?bc=/azure/cloud-adoption-framework/_bread/toc.json&toc=/azure/cloud-adoption-framework/scenarios/hybrid/toc.json
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/cluster-connect#option-2-service-account-bearer-token
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/cluster-connect
+#Export env var example
+export CLUSTER_NAME="AzureArcDevOnPrem"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export RESOURCE_GROUP="AzureArcDev"
+export REGION="WestEurope"
+echo $CLUSTER_NAME
+echo $RESOURCE_GROUP
+echo $REGION
 
-$CLUSTER_NAME="AzureArcDevOnPrem-t16"
-$RESOURCE_GROUP="AzureArcDev"
-
-#install azure cli
-#$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+#install AzureCLI
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 az upgrade
+az login
+
+
 #Install the connectedk8s Azure CLI extension of version >= 1.2.0:
 az extension add --name connectedk8s
+
 #Install az providers
 az provider register --namespace Microsoft.Kubernetes
 az provider register --namespace Microsoft.KubernetesConfiguration
 az provider register --namespace Microsoft.ExtendedLocation
+
+
+#Check az providers wait until Registered
+az provider show -n Microsoft.Kubernetes -o table
+az provider show -n Microsoft.KubernetesConfiguration -o table
+az provider show -n Microsoft.ExtendedLocation -o table
+
 #Create a resource group
-az group create --name $RESOURCE_GROUP --location WestEurope --output table
+az group create --name $RESOURCE_GROUP --location $REGION --output table
+
 #Connect an existing Kubernetes cluster
 az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+
 #Verify cluster connection
 az connectedk8s list --resource-group $RESOURCE_GROUP --output table
+
 #View Azure Arc agents for Kubernetes
 kubectl get deployments,pods -n azure-arc
+
 #Install the k8s-configuration Azure CLI extension of version >= 1.0.0:
 az extension add --name k8s-configuration
+
 #List all Azure Arc-enabled Kubernetes clusters without Azure Monitor extension
 az graph query -q "Resources | where type =~ 'Microsoft.Kubernetes/connectedClusters' | extend connectedClusterId = tolower(id) | project connectedClusterId | join kind = leftouter (KubernetesConfigurationResources | where type == 'microsoft.kubernetesconfiguration/extensions' | where properties.ExtensionType == 'microsoft.azuremonitor.containers' | parse tolower(id) with connectedClusterId '/providers/microsoft.kubernetesconfiguration/extensions' * | project connectedClusterId ) on connectedClusterId | where connectedClusterId1 == '' | project connectedClusterId"
+
 #List all Azure Arc-enabled Kubernetes resources
 az graph query -q "Resources | project id, subscriptionId, location, type, properties.agentVersion, properties.kubernetesVersion, properties.distribution, properties.infrastructure, properties.totalNodeCount, properties.totalCoreCount | where type =~ 'Microsoft.Kubernetes/connectedClusters'"
+
 #Get toket to connect k8s from portal
-$ARM_ID_CLUSTER=$(az connectedk8s show -n $CLUSTER_NAME -g $RESOURCE_GROUP --query id -o tsv)
-$ARM_ID_CLUSTER
-$AAD_ENTITY_OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
-$AAD_ENTITY_OBJECT_ID
+ARM_ID_CLUSTER=$(az connectedk8s show -n $CLUSTER_NAME -g $RESOURCE_GROUP --query id -o tsv)
+echo $ARM_ID_CLUSTER
+AAD_ENTITY_OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
+echo $AAD_ENTITY_OBJECT_ID
 az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_ENTITY_OBJECT_ID --scope $ARM_ID_CLUSTER
 kubectl create serviceaccount admin-user
 kubectl create clusterrolebinding admin-user-binding --clusterrole cluster-admin --serviceaccount default:admin-user
-$TOKEN
+SECRET_NAME=$(kubectl get serviceaccount admin-user -o jsonpath='{$.secrets[0].name}')
+TOKEN=$(kubectl get secret ${SECRET_NAME} -o jsonpath='{$.data.token}' | base64 -d | sed $'s/$/\\\n/g')
+echo $TOKEN
+```
+
+#connect to cluster from anywhere 
+az login
+CLUSTER_NAME="AzureArcDevOnPrem"
+RESOURCE_GROUP="AzureArcDev"
+ARM_ID_CLUSTER=$(az connectedk8s show -n $CLUSTER_NAME -g $RESOURCE_GROUP --query id -o tsv)
+az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_ENTITY_OBJECT_ID --scope $ARM_ID_CLUSTER
+
+#Access your cluster (Powershell)
+$CLUSTER_NAME="AzureArcDevOnPrem"
+$RESOURCE_GROUP="AzureArcDev"
+az connectedk8s proxy -n $CLUSTER_NAME -g $RESOURCE_GROUP --token $TOKEN
+
+#busybox for test
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+
+
+#https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-arc-enabled-clusters
+az k8s-extension create --name azuremonitor-containers --cluster-name $CLUSTER_NAME -g $RESOURCE_GROUP --cluster-type connectedClusters --extension-type Microsoft.AzureMonitor.Containers
+az resource list --resource-type Microsoft.OperationalInsights/workspaces -o json
+
+
+#TODO
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
+
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/azure-rbac
+
+
+
+
+

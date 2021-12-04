@@ -61,6 +61,10 @@
       dest: /home/ansible/vagrant/Vagrantfile
       force: yes      
 
+  - name: Pause for 3 minutes 
+    pause:
+      minutes: 3
+
   - name: vagrant up --provider virtualbox
     ansible.builtin.shell:
       cmd: vagrant up --provider virtualbox
