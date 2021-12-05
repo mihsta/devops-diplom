@@ -3,11 +3,14 @@
 
 # YAML file in the main branch
 schedules:
-- cron: "0 * * * *"
+- cron: "0 0 * * *"
   displayName: Scheduled build
   branches:
     include:
     - main
+
+variables:
+  - template: azure-pipelines-vars.yml  
 
 parameters:
   - name: doPublish
@@ -130,6 +133,7 @@ stages:
           command: 'build'
           Dockerfile: 'Dockerfile.backend'
           tags: |
+            $(variables.frontendtag)
             $(short_hash)
             latest         
           addPipelineData: false
@@ -141,6 +145,7 @@ stages:
           command: 'push'
           Dockerfile: 'Dockerfile.backend'
           tags: |
+            $(variables.backendtag)
             $(short_hash)
             latest         
           addPipelineData: false
@@ -153,6 +158,7 @@ stages:
           command: 'build'
           Dockerfile: 'Dockerfile.frontend'
           tags: |
+            $(variables.frontendtag)
             $(short_hash)
             latest
           addPipelineData: false
@@ -165,6 +171,7 @@ stages:
           command: 'push'
           Dockerfile: 'Dockerfile.frontend'
           tags: |
+            $(variables.backendtag)
             $(short_hash)
             latest
           addPipelineData: false
