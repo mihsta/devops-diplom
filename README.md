@@ -58,10 +58,14 @@ docker-compose up --detach
 <p>
 
 ```
-#https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow
-#https://github.com/nvie/gitflow
 #https://yapro.ru/article/6172
+https://russianblogs.com/article/51431181083/
+https://semver.org/
 
+gh pr view
+gh pr create --base master --title "some feature" --body "ready"
+
+git fetch -p 
 ```
 
 </p>
