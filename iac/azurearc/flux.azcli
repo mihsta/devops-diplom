@@ -44,7 +44,7 @@ az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-d
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-configurations
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-ci-cd
 #https://docs.microsoft.com/en-us/azure/container-registry/tasks-consume-public-content
- 
+
 export CLUSTER_NAME="AzureArcDevOnPremTest"
 export RESOURCE_GROUP="AzureArcDev"
 export REPO="https://github.com/mihsta/arc-k8s-demo"
@@ -55,5 +55,4 @@ az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
 az k8s-configuration create --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --operator-instance-name cluster-config --operator-namespace cluster-config --repository-url $REPO --scope cluster --cluster-type connectedClusters
 az k8s-configuration show --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --cluster-type connectedClusters
 az k8s-configuration delete --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --cluster-type connectedClusters
-
 

@@ -11,7 +11,7 @@ schedules:
 
 variables:
   - template: azure-pipelines-vars.yml  
-  
+
 parameters:
   - name: doPublish
     default: false
