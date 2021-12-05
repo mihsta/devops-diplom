@@ -1,18 +1,18 @@
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2-ci-cd
-
-
-#fluxv2
 export CLUSTER_NAME="AzureArcDevOnPrem"
 export CLUSTER_NAME="AzureArcDevOnPremTest"
 export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="AzureArcDev"
 export RESOURCE_GROUP="funny-hawk-rg"
 export REGION="WestEurope"
-az account set --subscription "ProductionSubscription"
+export RESOURCE_GROUP="AzureArcDev"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
 az account set --subscription "DevTestSubscription"
 
+az account set --subscription "ProductionSubscription"
+az account set --subscription "DevTestSubscription"
 
 az provider register --namespace Microsoft.Kubernetes
 az provider register --namespace Microsoft.ContainerService
@@ -20,20 +20,7 @@ az provider register --namespace Microsoft.KubernetesConfiguration
 az extension add --name aks-preview
 az extension add --name k8s-configuration
 az extension update -n k8s-extension
-az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
-az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
 az extension delete --name k8s-configuration
-
-
-export RESOURCE_GROUP="AzureArcDev"
-export CLUSTER_NAME="AzureArcDevOnPremTest"
-az account set --subscription "DevTestSubscription"
-
-az connectedk8s delete --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
-az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
-az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
-az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
-
 
 #fluxv1
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/use-gitops-with-helm
@@ -56,3 +43,95 @@ az k8s-configuration create --name cluster-config --cluster-name $CLUSTER_NAME -
 az k8s-configuration show --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --cluster-type connectedClusters
 az k8s-configuration delete --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --cluster-type connectedClusters
 
+#fluxv2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2-ci-cd
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
+
+az connectedk8s delete --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+
+export CLUSTER_NAME="funny-hawk-aks"
+export ACR="acrfannyhawk"
+export RESOURCE_GROUP="funny-hawk-rg"
+export REGION="WestEurope"
+
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export RESOURCE_GROUP="AzureArcDev"
+export ACR_NAME="acrdevtestregistry"
+export REGION="WestEurope"
+
+export REPO="https://github.com/mihsta/arc-k8s-demo"
+az account set --subscription "DevTestSubscription"
+
+
+az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --attach-acr $ACR
+
+#https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-kubernetes
+
+#!/bin/bash
+# This script requires Azure CLI version 2.25.0 or later. Check version with `az --version`.
+
+# Modify for your environment.
+# ACR_NAME: The name of your Azure Container Registry
+# SERVICE_PRINCIPAL_NAME: Must be unique within your AD tenant
+export ACR_NAME="acrdevtestregistry"
+az account set --subscription "DevTestSubscription"
+
+export ACR_NAME="acrfannyhawk"
+az account set --subscription "ProductionSubscription"
+export SERVICE_PRINCIPAL_NAME=acr-service-principalprod
+ACR_REGISTRY_ID=$(az acr show --name $ACR_NAME --query "id" --output tsv)
+
+# Create the service principal with rights scoped to the registry.
+# Default permissions are for docker pull access. Modify the '--role'
+# argument value as desired:
+# acrpull:     pull only
+# acrpush:     push and pull
+# owner:       push, pull, and assign roles
+az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --scopes $ACR_REGISTRY_ID --role AcrPull
+az ad sp list --display-name $SERVICE_PRINCIPAL_NAME
+
+# Output the service principal's credentials; use these in your services and
+# applications to authenticate to the container registry.
+# https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+
+az role definition list --name "AcrPull"
+
+az aks update -n $CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $ACR_NAME
+
+az account set --subscription "ProductionSubscription"
+export ACR_NAME="acrfannyhawk"
+export RESOURCE_GROUP="funny-hawk-rg"
+export CLUSTER_NAME="funny-hawk-aks"
+
+
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export RESOURCE_GROUP="AzureArcDev"
+az account set --subscription "DevTestSubscription"
+
+az k8s-configuration flux create \
+   --name cluster-config \
+   --cluster-name arc-cicd-cluster \
+   --namespace cluster-config \
+   --resource-group myResourceGroup \
+   -u  https://github.com/<Your organization>/arc-cicd-demo-gitops.git \
+   --https-user <Azure Repos username> \
+   --https-key <Azure Repos PAT token> \
+   --scope cluster \
+   --cluster-type managedClusters \
+   --branch master \
+   --kustomization name=cluster-config prune=true path=arc-cicd-cluster/manifests
+   
+az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops --namespace gitops -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops -t connectedClusters --yes
+
+## https://docs.gitops.weave.works/docs/getting-started/
+
+curl --silent --location "https://github.com/weaveworks/weave-gitops/releases/download/v0.5.0/gitops-$(uname)-$(uname -m).tar.gz" | tar xz -C /tmp
+sudo mv /tmp/gitops /usr/local/bin
+gitops version
+
+
+gitops install --app-config-url git@github.com:mihsta/gitops-config.git
+gitops ui run
