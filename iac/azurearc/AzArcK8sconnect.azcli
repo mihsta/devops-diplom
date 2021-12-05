@@ -82,12 +82,13 @@ $CLUSTER_NAME="AzureArcDevOnPrem"
 $RESOURCE_GROUP="AzureArcDev"
 az connectedk8s proxy -n $CLUSTER_NAME -g $RESOURCE_GROUP --token $TOKEN
 
-#busybox for test
-kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 
 
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2-ci-cd
+
+
 
 export CLUSTER_NAME="AzureArcDevOnPrem"
 export CLUSTER_NAME="AzureArcDevOnPremTest"
@@ -106,7 +107,41 @@ az extension add --name aks-preview
 az extension add --name k8s-configuration
 az extension update -n k8s-extension
 az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
+az extension delete --name k8s-configuration
+
+
+export RESOURCE_GROUP="AzureArcDev"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+az account set --subscription "DevTestSubscription"
+
+az connectedk8s delete --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
+
+
+
+
+
+
+
+
+
 
 
 #TODO
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/azure-rbac
+
+
+
+
+
+
+#troubleshooting
+#https://stackoverflow.com/questions/52369247/namespace-stuck-as-terminating-how-i-removed-it
+kubectl api-resources --verbs=list --namespaced -o name \
+  | xargs -n 1 kubectl get --show-kind --ignore-not-found -n <namespace>
+#busybox for test
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+watch kubectl get all -A
