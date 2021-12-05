@@ -34,7 +34,7 @@
 <summary>Docker commands</summary>
 <p>
 
-```bash
+```
 docker build -f '.\Dockerfile.backend' -t backend . --no-cache
 docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
 
