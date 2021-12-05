@@ -124,7 +124,7 @@ stages:
           command: 'build'
           Dockerfile: 'Dockerfile.backend'
           tags: |
-            ${variables.frontendtag}
+            $(variables.frontendtag)
             $(short_hash)
             latest         
           addPipelineData: false
@@ -137,7 +137,7 @@ stages:
           command: 'build'
           Dockerfile: 'Dockerfile.frontend'
           tags: |
-            ${variables.frontendtag}
+            $(variables.frontendtag)
             $(short_hash)
             latest
           addPipelineData: false
