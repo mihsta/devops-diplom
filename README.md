@@ -67,6 +67,8 @@ gh pr create --base master --title "some feature" --body "ready"
 git fetch -p 
 git tag
 git push --tag
+git tag --delete 1.0.1
+git push --delete origin tagname
 ```
 
 </p>

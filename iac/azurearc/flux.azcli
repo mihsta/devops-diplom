@@ -1,0 +1,55 @@
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2-ci-cd
+
+
+#fluxv2
+export CLUSTER_NAME="AzureArcDevOnPrem"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export CLUSTER_NAME="funny-hawk-aks"
+export RESOURCE_GROUP="AzureArcDev"
+export RESOURCE_GROUP="funny-hawk-rg"
+export REGION="WestEurope"
+az account set --subscription "ProductionSubscription"
+az account set --subscription "DevTestSubscription"
+
+
+az provider register --namespace Microsoft.Kubernetes
+az provider register --namespace Microsoft.ContainerService
+az provider register --namespace Microsoft.KubernetesConfiguration
+az extension add --name aks-preview
+az extension add --name k8s-configuration
+az extension update -n k8s-extension
+az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
+az extension delete --name k8s-configuration
+
+
+export RESOURCE_GROUP="AzureArcDev"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+az account set --subscription "DevTestSubscription"
+
+az connectedk8s delete --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+az k8s-configuration flux delete -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo -t connectedClusters --yes
+
+
+#fluxv1
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/use-gitops-with-helm
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/use-azure-policy
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/deploy-azure-iot-edge-workloads
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-connected-cluster
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-gitops-ci-cd
+
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export RESOURCE_GROUP="AzureArcDev"
+export REPO="https://github.com/mihsta/arc-k8s-demo"
+
+az account set --subscription "DevTestSubscription"
+az connectedk8s delete --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az connectedk8s connect --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az k8s-configuration create --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --operator-instance-name cluster-config --operator-namespace cluster-config --repository-url $REPO --scope cluster --cluster-type connectedClusters
+az k8s-configuration show --name cluster-config --cluster-name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --cluster-type connectedClusters
+
+

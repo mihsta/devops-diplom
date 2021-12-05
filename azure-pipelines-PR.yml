@@ -2,6 +2,10 @@
 # Build and test ASP.NET Core projects targeting .NET Core.
 
 # YAML file in the main branch
+
+variables:
+  - template: azure-pipelines-vars.yml  
+
 parameters:
   - name: doAnalyze
     default: true
@@ -87,3 +91,54 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mihsta'
+
+ # Docker Build
+  - job: DockerBuildAndPushBackend
+    pool:  
+      vmImage: Ubuntu 20.04
+    steps:
+      - checkout: self
+      - task: DockerInstaller@0
+        inputs:
+          dockerVersion: '17.09.0-ce' 
+      - bash: |
+          short_hash=`git rev-parse --short=7 HEAD`
+          echo ""
+          echo "Full git hash:  $(Build.SourceVersion)"
+          echo "Short git hash: $short_hash"
+          echo ""
+          ## Fail step if full hash does not start with short hash
+          if [[ $(Build.SourceVersion) != $short_hash* ]]; then
+            echo "--> Hashes do not match! Aborting."
+            exit 1
+          fi
+          echo "--> Hashes match. Storing short hash for subsequent steps."
+          ## Store variable for subsequent steps
+          echo "##vso[task.setvariable variable=short_hash]$short_hash"        
+        displayName: Get short git hash
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-backend'
+          command: 'build'
+          Dockerfile: 'Dockerfile.backend'
+          tags: |
+            ${{ variables.frontendtag }}
+            $(short_hash)
+            latest         
+          addPipelineData: false
+          addBaseImageData: false
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'docker_hub'
+          repository: 'mihailsta/diplomapp-frontend'
+          command: 'build'
+          Dockerfile: 'Dockerfile.frontend'
+          tags: |
+            ${{ variables.backenddtag }}
+            $(short_hash)
+            latest
+          addPipelineData: false
+          addBaseImageData: false
