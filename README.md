@@ -52,3 +52,17 @@ docker-compose up --detach
 
 </p>
 </details>  
+
+<details>
+<summary>Git commands</summary>
+<p>
+
+```
+#https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow
+#https://github.com/nvie/gitflow
+
+```
+
+</p>
+</details>  
+
