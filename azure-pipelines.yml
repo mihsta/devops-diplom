@@ -169,11 +169,3 @@ stages:
             latest
           addPipelineData: false
           addBaseImageData: false
-
-
-
-# Stage end CI process
-- stage: CI_end
-  displayName: CI_end
-  jobs:
-    - job:
