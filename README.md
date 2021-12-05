@@ -60,6 +60,7 @@ docker-compose up --detach
 ```
 #https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow
 #https://github.com/nvie/gitflow
+#https://yapro.ru/article/6172
 
 ```
 
