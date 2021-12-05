@@ -4,19 +4,15 @@ project.lock.json
 .DS_Store
 *.pyc
 nupkg/
-
 # Visual Studio Code
 .vscode
-
 # Rider
 .idea
-
 # User-specific files
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -32,20 +28,15 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-
 # Visual Studio 2015
 .vs/
-
 # Local .terraform directories
 **/.terraform/*
-
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
 # Crash log files
 crash.log
-
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
 # .tfvars files are managed as part of configuration and so should be included in
 # version control.
@@ -58,11 +49,9 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
 # Include override files you do wish to add to version control using negated pattern
 #
 # !example_override.tf
-
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 TODO.md
@@ -70,7 +59,7 @@ diploma_WS.code-workspace
 terraform/login.az
 # Why isn't it working?
 iac/terraform/terraform.tfvars
-iac/terraform/terraform.tfvars
-
+#
+**/*.tfvars
 iac/ansible/inventory
 

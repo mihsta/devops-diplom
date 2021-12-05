@@ -8,7 +8,9 @@
 #Export env var example
 export CLUSTER_NAME="AzureArcDevOnPrem"
 export CLUSTER_NAME="AzureArcDevOnPremTest"
+export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="AzureArcDev"
+export RESOURCE_GROUP="funny-hawk-rg"
 export REGION="WestEurope"
 echo $CLUSTER_NAME
 echo $RESOURCE_GROUP
@@ -84,17 +86,27 @@ az connectedk8s proxy -n $CLUSTER_NAME -g $RESOURCE_GROUP --token $TOKEN
 kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 
 
-#https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-arc-enabled-clusters
-az k8s-extension create --name azuremonitor-containers --cluster-name $CLUSTER_NAME -g $RESOURCE_GROUP --cluster-type connectedClusters --extension-type Microsoft.AzureMonitor.Containers
-az resource list --resource-type Microsoft.OperationalInsights/workspaces -o json
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
+#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/conceptual-gitops-flux2
+
+export CLUSTER_NAME="AzureArcDevOnPrem"
+export CLUSTER_NAME="AzureArcDevOnPremTest"
+export CLUSTER_NAME="funny-hawk-aks"
+export RESOURCE_GROUP="AzureArcDev"
+export RESOURCE_GROUP="funny-hawk-rg"
+export REGION="WestEurope"
+az account set --subscription "ProductionSubscription"
+az account set --subscription "DevTestSubscription"
+
+
+az provider register --namespace Microsoft.Kubernetes
+az provider register --namespace Microsoft.ContainerService
+az provider register --namespace Microsoft.KubernetesConfiguration
+az extension add --name aks-preview
+az extension add --name k8s-configuration
+az extension update -n k8s-extension
+az k8s-configuration flux create -g $RESOURCE_GROUP -c $CLUSTER_NAME -n gitops-demo --namespace gitops-demo -t connectedClusters --scope cluster -u https://github.com/fluxcd/flux2-kustomize-helm-example --branch main  --kustomization name=infra path=./infrastructure prune=true --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
 
 
 #TODO
-#https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2
-
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/azure-rbac
-
-
-
-
-
