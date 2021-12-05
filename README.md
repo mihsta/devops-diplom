@@ -64,7 +64,6 @@ https://semver.org/
 
 gh pr view
 gh pr create --base master --title "some feature" --body "ready"
-
 git fetch -p 
 ```
 
