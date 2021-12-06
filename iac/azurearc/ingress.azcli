@@ -14,3 +14,6 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6
 
 
 az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '<YOUR-IP-ADDRESS>')].[id]" --output tsvaz
+
+
+az network public-ip list -o table
