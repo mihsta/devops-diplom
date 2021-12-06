@@ -8,3 +8,14 @@ werf converge --repo ghcr.io/mihsta/
 kubectl port-forward service/frontend :80 -n diplomapp
 
 werf converge --repo ghcr.io/mihsta/diplomapp
+werf dismiss --repo ghcr.io/mihsta/diplomapp
+
+
+Окружение	Блок workflow
+Production	Выкат на production из master автоматически + откат через revert
+Staging / Testing / Development / QA	Выкат на production-like из pull request по кнопке
+Review	Выкат на review из pull request автоматически после ручной активации
+
+converge — задание сборки, публикации образов и выката приложения для одного из контуров кластера;
+dismiss — задание удаления приложения (используется только для review окружений);
+cleanup — задание очистки хранилища стадий и container registry.
