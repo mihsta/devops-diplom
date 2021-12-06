@@ -8,10 +8,19 @@
 #Export env var example
 export CLUSTER_NAME="AzureArcDevOnPrem"
 export CLUSTER_NAME="AzureArcDevOnPremTest"
-export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="AzureArcDev"
+
+
+export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="funny-hawk-rg"
+az account set --subscription "ProductionSubscription"
+#AKS get cred
+az aks get-credentials --resource-group $RESOURCE_GROUP  --name $CLUSTER_NAME
+
+
+
 export REGION="WestEurope"
+
 echo $CLUSTER_NAME
 echo $RESOURCE_GROUP
 echo $REGION
@@ -81,7 +90,6 @@ az role assignment create --role "Azure Arc Kubernetes Viewer" --assignee $AAD_E
 $CLUSTER_NAME="AzureArcDevOnPrem"
 $RESOURCE_GROUP="AzureArcDev"
 az connectedk8s proxy -n $CLUSTER_NAME -g $RESOURCE_GROUP --token $TOKEN
-
 
 
 
