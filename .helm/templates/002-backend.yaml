@@ -33,6 +33,7 @@ spec:
   type: LoadBalancer
   ports:
   - name: "backend-service"
-    port: 5030
+    port: 5030 
+    targetport: 5030   
   selector:
     app: backend
