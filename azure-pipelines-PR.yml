@@ -93,7 +93,7 @@ stages:
         organization: 'mihsta'
 
  # Docker Build
-  - job: DockerBuildAndPushBackend
+  - job: DockerBuild
     pool:  
       vmImage: Ubuntu 20.04
     steps:
