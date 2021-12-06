@@ -3,8 +3,8 @@ project: diplomapp
 ---
 image: frontend
 dockerfile: Dockerfile.frontend
-context: frontend
+context: .
 ---
 image: backend
 dockerfile: Dockerfile.backend
-context: backend
+context: .
