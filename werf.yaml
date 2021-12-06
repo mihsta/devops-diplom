@@ -1,0 +1,10 @@
+configVersion: 1
+project: diplomapp
+---
+image: frontend
+dockerfile: Dockerfile.frontend
+context: frontend
+---
+image: backend
+dockerfile: Dockerfile.backend
+context: backend

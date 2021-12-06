@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      imagePullSecrets:
+        - name: registrysecret
+      containers:
+      - image: {{ .Values.werf.image.result }}
+        name: result
+        ports:
+        - containerPort: 80
+          name: result
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  ports:
+  - name: "result-service"
+    port: 80
+  selector:
+    app: result
