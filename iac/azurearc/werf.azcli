@@ -21,3 +21,5 @@ dismiss — задание удаления приложения (использ
 cleanup — задание очистки хранилища стадий и container registry.
 
 
+https://ru.werf.io/documentation/v1.2/advanced/ci_cd/github_actions.html
+cat ~/.kube/config | base64
