@@ -20,7 +20,7 @@ spec:
       - image: {{ .Values.werf.image.backend }}
         name: backend
         ports:
-        - containerPort: 5030
+        - containerPort: 80
           name: backend
 ---
 apiVersion: v1
@@ -33,7 +33,6 @@ spec:
   type: LoadBalancer
   ports:
   - name: "backend-service"
-    port: 5030 
-    targetport: 5030   
+    port: 80 
   selector:
     app: backend
