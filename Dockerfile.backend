@@ -14,6 +14,8 @@ RUN useradd -N -u 1000 -m -s /bin/sh appuser
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 CMD ["wget","-nv","-t1","--spider","http://localhost"]
+
 USER appuser
 
 ENTRYPOINT ["dotnet", "backend.dll"]

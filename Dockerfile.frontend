@@ -12,7 +12,9 @@ WORKDIR /var/www/web
 COPY --from=publish /app/publish/wwwroot .
 COPY ["diplomapp/frontend/nginx.conf", "/etc/nginx/nginx.conf"]
 
-USER appuser
+# Healthcheck
+HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost
 
-EXPOSE 8080
+USER appuser
+EXPOSE 80
 
