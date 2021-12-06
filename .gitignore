@@ -57,9 +57,5 @@ override.tf.json
 TODO.md
 diploma_WS.code-workspace
 terraform/login.az
-# Why isn't it working?
-iac/terraform/terraform.tfvars
-#
-**/*.tfvars
 iac/ansible/inventory
 

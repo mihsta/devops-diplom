@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
   rules:
-  - host: frontend.quickstart-application.example.com
+  - host: app.asis.org.ru
     http:
       paths:
       - path: /
@@ -16,7 +16,7 @@ spec:
             name: frontend
             port:
               number: 80
-  - host: backend.quickstart-application.example.com
+  - host: appback.asis.org.ru
     http:
       paths:
       - path: /
