@@ -5,12 +5,8 @@ RUN dotnet publish "frontend.csproj" -c Release -o /app/publish
 
 FROM nginx:alpine AS final
 
-RUN groupadd -r swuser -g 433 && \
-    mkdir /home/swuser && \
-    useradd -u 431 -r -g swuser -d /home/swuser -s /sbin/nologin \
-         -c "Docker image user" swuser && \
-    chown -R swuser:swuser /home/swuser
-    
+RUN groupadd -r swuser -g 433 && mkdir /home/swuser && useradd -u 431 -r -g swuser -d /home/swuser -s /sbin/nologin -c "Docker image user" swuser && chown -R swuser:swuser /home/swuser
+
 USER swuser
 
 WORKDIR /var/www/web
