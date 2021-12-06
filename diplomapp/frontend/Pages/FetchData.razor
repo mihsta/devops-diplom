@@ -41,7 +41,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {        
-        forecasts = await Http.GetFromJsonAsync<IEnumerable<WeatherForecast>>("http://localhost:5030/weatherforecast");
+        forecasts = await Http.GetFromJsonAsync<IEnumerable<WeatherForecast>>("http://appback.asis.org.ru/weatherforecast");
     }
 
     public class WeatherForecast
