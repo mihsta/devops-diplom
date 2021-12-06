@@ -135,3 +135,9 @@ gitops version
 
 gitops install --app-config-url git@github.com:mihsta/gitops-config.git
 gitops ui run
+kubectl describe pod pod/wego-app-5c69b6985c-2457w -n wego-system
+
+https://github.com/werf/quickstart-application
+werf converge --repo ghcr.io/mihsta/quickstart-application
+
+kubectl port-forward service/vote :80 -n quickstart-application
