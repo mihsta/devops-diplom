@@ -2,36 +2,36 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: result
-  name: result
+    app: backend
+  name: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: result
+      app: backend
   template:
     metadata:
       labels:
-        app: result
+        app: backend
     spec:
       imagePullSecrets:
         - name: registrysecret
       containers:
-      - image: {{ .Values.werf.image.result }}
-        name: result
+      - image: {{ .Values.werf.image.backend }}
+        name: backend
         ports:
         - containerPort: 80
-          name: result
+          name: backend
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: result
-  name: result
+    app: backend
+  name: backend
 spec:
   ports:
-  - name: "result-service"
+  - name: "backend-service"
     port: 80
   selector:
-    app: result
+    app: backend
