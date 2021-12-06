@@ -5,6 +5,6 @@ https://ru.werf.io/documentation/v1.2/advanced/ci_cd/ci_cd_workflow_basics.html#
 
 https://github.com/werf/quickstart-application
 werf converge --repo ghcr.io/mihsta/
-kubectl port-forward service/vote :80 -n quickstart-application
+kubectl port-forward service/frontend :80 -n diplomapp
 
 werf converge --repo ghcr.io/mihsta/diplomapp

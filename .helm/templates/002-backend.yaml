@@ -20,7 +20,7 @@ spec:
       - image: {{ .Values.werf.image.backend }}
         name: backend
         ports:
-        - containerPort: 80
+        - containerPort: 5030
           name: backend
 ---
 apiVersion: v1
