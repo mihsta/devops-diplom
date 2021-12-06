@@ -38,16 +38,17 @@
 docker build -f '.\Dockerfile.backend' -t backend . --no-cache
 docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
 
-dotnet publish .\diplomapp\backend\backend.csproj -c Release
-dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
-
-dotnet pusln .\diplomapp\diplomapp.sln list
+#for test dockerfile
+docker run --rm -it mcr.microsoft.com/dotnet/aspnet:6.0 /bin/sh
 
 docker-compose down
 docker image prune -f
 docker-compose pull
 docker-compose up --detach
 
+dotnet publish .\diplomapp\backend\backend.csproj -c Release
+dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
+dotnet pusln .\diplomapp\diplomapp.sln list
 ```
 
 </p>
