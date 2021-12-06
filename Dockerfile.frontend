@@ -3,18 +3,8 @@ WORKDIR /src
 COPY ["diplomapp/frontend", "."]
 RUN dotnet publish "frontend.csproj" -c Release -o /app/publish
 
-
 FROM nginx:alpine AS final
-
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
 WORKDIR /var/www/web
 COPY --from=publish /app/publish/wwwroot .
 COPY ["diplomapp/frontend/nginx.conf", "/etc/nginx/nginx.conf"]
-
-# Healthcheck
-HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost
-
-USER appuser
-EXPOSE 80
-
+EXPOSE 8080
