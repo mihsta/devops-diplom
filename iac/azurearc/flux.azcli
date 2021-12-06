@@ -104,7 +104,7 @@ az account set --subscription "ProductionSubscription"
 export ACR_NAME="acrfannyhawk"
 export RESOURCE_GROUP="funny-hawk-rg"
 export CLUSTER_NAME="funny-hawk-aks"
-
+az connectedk8s delete --name funny-hawk-aks --resource-group funny-hawk-rg
 
 export CLUSTER_NAME="AzureArcDevOnPremTest"
 export RESOURCE_GROUP="AzureArcDev"
