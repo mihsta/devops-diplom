@@ -1,10 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: asis.org.ru
-  annotations:
+  name: diplomapp
+  annotations:    
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
   rules:
   - host: asis.org.ru

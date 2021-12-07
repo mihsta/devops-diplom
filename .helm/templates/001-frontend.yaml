@@ -31,7 +31,7 @@ metadata:
   name: frontend
 spec:
   ports:
-  - name: http
+  - name: "frontend-service"
     port: 8080
   selector:
     app: frontend
