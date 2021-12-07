@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - dapp.asis.org.ru
+    - diplomapp.asis.org.ru
     secretName: tls-secret
   rules:
-  - host: dapp.asis.org.ru
+  - host: diplomapp.asis.org.ru
     http:
       paths:      
       - path: /api(/|$)(.*)
