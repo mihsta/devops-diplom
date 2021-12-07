@@ -18,5 +18,7 @@ az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '<YO
 az account set --subscription "ProductionSubscription"
 az network public-ip list -o table
 
-http://stage-app.asis.org.ru/
-http://stage-appback.asis.org.ru/weatherforecast
+watch curl http://stage-app.asis.org.ru/
+watch curl http://stage-appback.asis.org.ru/weatherforecast
+watch curl http://appback.asis.org.ru/weatherforecast
+watch curl http://app.asis.org.ru/weatherforecast

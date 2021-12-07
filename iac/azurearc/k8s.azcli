@@ -9,3 +9,4 @@ kubectl logs backend-7f664bf89b-l97vn -p
  
 kubectl get all
 
+kubectl exec --stdin --tty frontend-967d75576-jbbgw -- /bin/bash
