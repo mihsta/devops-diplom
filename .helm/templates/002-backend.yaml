@@ -30,6 +30,7 @@ metadata:
     app: backend
   name: backend
 spec:
+  type: ClusterIP
   ports:
   - name: "backend-service"
     port: 8080    

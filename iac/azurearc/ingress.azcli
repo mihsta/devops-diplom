@@ -31,6 +31,10 @@ https://kubernetes.github.io/ingress-nginx/deploy/
 
 https://docs.microsoft.com/en-us/azure/aks/ingress-static-ip
 
+
+
+
+
 https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
 
 
@@ -64,6 +68,8 @@ CERT_MANAGER_TAG=v1.6.1
 CERT_MANAGER_IMAGE_CONTROLLER=jetstack/cert-manager-controller
 CERT_MANAGER_IMAGE_WEBHOOK=jetstack/cert-manager-webhook
 CERT_MANAGER_IMAGE_CAINJECTOR=jetstack/cert-manager-cainjector
+ACR_URL=azacregistryhawk.azurecr.io
+
 
 az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$CONTROLLER_IMAGE:$CONTROLLER_TAG --image $CONTROLLER_IMAGE:$CONTROLLER_TAG --no-wait
 az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$PATCH_IMAGE:$PATCH_TAG --image $PATCH_IMAGE:$PATCH_TAG --no-wait
@@ -118,7 +124,46 @@ az network dns record-set a add-record \
     --zone-name asis.org.ru \
     --record-set-name "@" \
     --ipv4-address 20.103.107.191
-
+    
+#curl bysy box
 kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm
 
+# Label the ingress-basic namespace to disable resource validation
 kubectl label namespace ingress-basic cert-manager.io/disable-validation=true
+
+# Add the Jetstack Helm repository
+helm repo add jetstack https://charts.jetstack.io
+
+# Update your local Helm chart repository cache
+helm repo update
+
+# Install the cert-manager Helm chart
+helm install cert-manager jetstack/cert-manager \
+  --replace \
+  --namespace ingress-basic \
+  --version $CERT_MANAGER_TAG \
+  --set installCRDs=true \
+  --set nodeSelector."kubernetes\.io/os"=linux \
+  --set image.repository=$ACR_URL/$CERT_MANAGER_IMAGE_CONTROLLER \
+  --set image.tag=$CERT_MANAGER_TAG \
+  --set webhook.image.repository=$ACR_URL/$CERT_MANAGER_IMAGE_WEBHOOK \
+  --set webhook.image.tag=$CERT_MANAGER_TAG \
+  --set cainjector.image.repository=$ACR_URL/$CERT_MANAGER_IMAGE_CAINJECTOR \
+  --set cainjector.image.tag=$CERT_MANAGER_TAG
+
+#https://cert-manager.io/docs/configuration/
+
+#https://letsencrypt.org/docs/staging-environment/
+#change the mail
+kubectl apply -f cluster-issuer.yaml
+
+
+kubectl apply -f aks-hello-world-one.yaml --namespace ingress-basic
+kubectl apply -f aks-hello-world-two.yaml --namespace ingress-basic
+kubectl apply -f aks-hello-world-ingress.yaml --namespace ingress-basic
+
+kubectl get certificate --namespace ingress-basic
+
+https://hello-world-ingress.asis.org.ru
+https://hello-world-ingress.asis.org.ru/hello-world-two
+https://hello-world-ingress.asis.org.ru/static
