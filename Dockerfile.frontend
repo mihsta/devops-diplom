@@ -6,7 +6,7 @@ RUN dotnet publish "frontend.csproj" -c Release -o /app/publish
 
 FROM nginx:alpine AS final
 
-EXPOSE 80
+EXPOSE 8080
 
 WORKDIR /var/www/web
 COPY --from=publish /app/publish/wwwroot .
