@@ -16,13 +16,3 @@ spec:
             name: frontend
             port:
               number: 8080
-  - host: asis.org.ru
-    http:
-      paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 8080
