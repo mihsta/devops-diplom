@@ -30,7 +30,6 @@ metadata:
     app: backend
   name: backend
 spec:
-  type: LoadBalancer
   ports:
   - name: "backend-service"
     port: 80

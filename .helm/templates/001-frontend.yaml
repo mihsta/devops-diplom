@@ -30,7 +30,6 @@ metadata:
     app: frontend
   name: frontend
 spec:
-  type: LoadBalancer
   ports:
   - name: "frontend-service"
     port: 80
