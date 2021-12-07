@@ -27,3 +27,86 @@ https://www.endycahyono.com/article/hosting-blazor-webassembly-in-nginx
 https://dev.to/___bn___/serve-a-single-page-application-along-with-its-backend-api-thanks-to-nginx-reverse-proxy-2h5c
 
 https://docs.microsoft.com/ru-ru/azure/aks/ingress-basic
+https://kubernetes.github.io/ingress-nginx/deploy/
+
+https://docs.microsoft.com/en-us/azure/aks/ingress-static-ip
+
+https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
+
+
+#set prod context az cli
+export MYACR=azacregistryhawk && export CLUSTER_NAME="funny-hawk-aks" && export RESOURCE_GROUP="funny-hawk-rg" && export SUBSCRIPTION="ProductionSubscription" && az account set --subscription $SUBSCRIPTION  && echo && echo Subscription: $SUBSCRIPTION && echo Clustername: $CLUSTER_NAME && echo Resource group: $RESOURCE_GROUP && echo
+
+# Run the following line to create an Azure Container Registry if you do not already have one
+az acr create -n $MYACR -g $RESOURCE_GROUP --sku basic
+
+#connect aks to acr
+az aks update -n $CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $MYACR
+
+#create dns zone
+az network dns zone create -g DefaultResourceGroup-WEU -n asis.org.ru
+
+
+REGISTRY_NAME=$MYACR
+RESOURCE_GROUP="funny-hawk-rg"
+#https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+SOURCE_REGISTRY=k8s.gcr.io
+CONTROLLER_IMAGE=ingress-nginx/controller
+CONTROLLER_TAG=v1.1.0
+PATCH_IMAGE=ingress-nginx/kube-webhook-certgen
+PATCH_TAG=v1.1.1
+DEFAULTBACKEND_IMAGE=defaultbackend-amd64
+DEFAULTBACKEND_TAG=1.5
+
+#https://github.com/jetstack/cert-manager/releases
+CERT_MANAGER_REGISTRY=quay.io
+CERT_MANAGER_TAG=v1.6.1
+CERT_MANAGER_IMAGE_CONTROLLER=jetstack/cert-manager-controller
+CERT_MANAGER_IMAGE_WEBHOOK=jetstack/cert-manager-webhook
+CERT_MANAGER_IMAGE_CAINJECTOR=jetstack/cert-manager-cainjector
+
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$CONTROLLER_IMAGE:$CONTROLLER_TAG --image $CONTROLLER_IMAGE:$CONTROLLER_TAG --no-wait
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$PATCH_IMAGE:$PATCH_TAG --image $PATCH_IMAGE:$PATCH_TAG --no-wait
+az acr import --name $REGISTRY_NAME --source $SOURCE_REGISTRY/$DEFAULTBACKEND_IMAGE:$DEFAULTBACKEND_TAG --image $DEFAULTBACKEND_IMAGE:$DEFAULTBACKEND_TAG --no-wait
+az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGER_IMAGE_CONTROLLER:$CERT_MANAGER_TAG --image $CERT_MANAGER_IMAGE_CONTROLLER:$CERT_MANAGER_TAG --no-wait
+az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGER_IMAGE_WEBHOOK:$CERT_MANAGER_TAG --image $CERT_MANAGER_IMAGE_WEBHOOK:$CERT_MANAGER_TAG --no-wait
+az acr import --name $REGISTRY_NAME --source $CERT_MANAGER_REGISTRY/$CERT_MANAGER_IMAGE_CAINJECTOR:$CERT_MANAGER_TAG --image $CERT_MANAGER_IMAGE_CAINJECTOR:$CERT_MANAGER_TAG --no-wait
+
+az acr repository list --name azacregistryhawk --resource-group $RESOURCE_GROUP --output table
+
+#https://docs.microsoft.com/en-us/azure/container-registry/container-registry-helm-repos
+
+
+# Add the ingress-nginx repository
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+# Set variable for ACR location to use for pulling images
+ACR_URL=azacregistryhawk.azurecr.io
+
+# Use Helm to deploy an NGINX ingress controller
+helm install nginx-ingress ingress-nginx/ingress-nginx \
+    --namespace ingress-basic --create-namespace \
+    --set controller.replicaCount=2 \
+    --set controller.nodeSelector."kubernetes\.io/os"=linux \
+    --set controller.image.registry=$ACR_URL \
+    --set controller.image.image=$CONTROLLER_IMAGE \
+    --set controller.image.tag=$CONTROLLER_TAG \
+    --set controller.image.digest="" \
+    --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
+    --set controller.admissionWebhooks.patch.image.registry=$ACR_URL \
+    --set controller.admissionWebhooks.patch.image.image=$PATCH_IMAGE \
+    --set controller.admissionWebhooks.patch.image.tag=$PATCH_TAG \
+    --set controller.admissionWebhooks.patch.image.digest="" \
+    --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
+    --set defaultBackend.image.registry=$ACR_URL \
+    --set defaultBackend.image.image=$DEFAULTBACKEND_IMAGE \
+    --set defaultBackend.image.tag=$DEFAULTBACKEND_TAG \
+    --set defaultBackend.image.digest=""
+
+kubectl --namespace ingress-basic get services -o wide -w nginx-ingress-ingress-nginx-controller
+
+az network dns record-set a add-record \
+    --resource-group myResourceGroup \
+    --zone-name MY_CUSTOM_DOMAIN \
+    --record-set-name "*" \
+    --ipv4-address MY_EXTERNAL_IP
