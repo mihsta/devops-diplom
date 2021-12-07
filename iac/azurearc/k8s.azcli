@@ -7,7 +7,7 @@ export NAMESPACE="diplomapp-staging" && kubectl config set-context --current --n
 export NAMESPACE="diplomapp-production" && kubectl config set-context --current --namespace=$NAMESPACE
 
 #current pod
-export POD=frontend-745cb4748b-2k646
+export POD=frontend-fdcfcf7c6-8sj2b
 kubectl get all
 #pod shell
 kubectl exec --stdin --tty $POD -- /bin/bash
