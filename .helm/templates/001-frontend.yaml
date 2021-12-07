@@ -20,7 +20,7 @@ spec:
       - image: {{ .Values.werf.image.frontend }}
         name: frontend
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           name: frontend
 ---
 apiVersion: v1
@@ -34,5 +34,6 @@ spec:
   ports:
   - name: "frontend-service"
     port: 80
+    targetPort: 8080
   selector:
     app: frontend
