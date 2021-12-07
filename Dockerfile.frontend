@@ -8,14 +8,13 @@ FROM nginx:alpine AS final
 
 EXPOSE 80
 
-
 WORKDIR /var/www/web
 COPY --from=publish /app/publish/wwwroot .
 COPY ["diplomapp/frontend/nginx.conf", "/etc/nginx/nginx.conf"]
 
 # Healthcheck
-HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost
+#HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost
 
-RUN adduser -D appuser
-USER appuser
+#RUN adduser -D appuser
+#USER appuser
 
