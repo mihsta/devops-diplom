@@ -9,14 +9,13 @@ RUN dotnet publish "backend.csproj" -c Release -o /app/publish
 
 FROM base AS final
 
-#RUN useradd -N -u 1000 -m -s /bin/sh appuser
-
 WORKDIR /app
 COPY --from=publish /app/publish .
 
 #HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost/weatherforecast
 #chown vagrant:vagrant /home/vagrant/.kube/config
-#USER appuser
+RUN useradd -N -u 1000 -m -s /bin/sh appuser
+USER appuser
 
 ENTRYPOINT ["dotnet", "backend.dll"]
 
