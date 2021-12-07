@@ -102,11 +102,13 @@ helm install nginx-ingress ingress-nginx/ingress-nginx \
     --set defaultBackend.image.image=$DEFAULTBACKEND_IMAGE \
     --set defaultBackend.image.tag=$DEFAULTBACKEND_TAG \
     --set defaultBackend.image.digest=""
-
+    
+#get the public IP address
 kubectl --namespace ingress-basic get services -o wide -w nginx-ingress-ingress-nginx-controller
 
+#Add an A record to your DNS zone
 az network dns record-set a add-record \
-    --resource-group myResourceGroup \
-    --zone-name MY_CUSTOM_DOMAIN \
+    --resource-group DefaultResourceGroup-WEU \
+    --zone-name asis.org.ru \
     --record-set-name "*" \
-    --ipv4-address MY_EXTERNAL_IP
+    --ipv4-address 20.103.107.191

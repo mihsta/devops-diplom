@@ -15,7 +15,7 @@ spec:
           service:
             name: frontend
             port:
-              number: 80
+              number: 8080
   - host: asis.org.ru
     http:
       paths:
@@ -25,4 +25,4 @@ spec:
           service:
             name: backend
             port:
-              number: 80
+              number: 8080
