@@ -7,12 +7,12 @@ export NAMESPACE="diplomapp-staging" && kubectl config set-context --current --n
 export NAMESPACE="diplomapp-production" && kubectl config set-context --current --namespace=$NAMESPACE
 
 #current pod
-export POD=frontend-fdcfcf7c6-8sj2b
+export POD=frontend-cfdc577d6-wfdzg
 kubectl get all
 #pod shell
 kubectl exec --stdin --tty $POD -- /bin/bash
 #pod logs
-kubectl logs $POD -p
+kubectl logs frontend-cfdc577d6-bffz9 -p
 #set prod
 export CLUSTER_NAME="funny-hawk-aks" && export RESOURCE_GROUP="funny-hawk-rg" && export SUBSCRIPTION="ProductionSubscription" && az account set --subscription $SUBSCRIPTION  && echo && echo Subscription: $SUBSCRIPTION && echo Clustername: $CLUSTER_NAME && echo Resource group: $RESOURCE_GROUP && echo
 
