@@ -1,0 +1,11 @@
+https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/
+
+
+export NAMESPACE="diplomapp-staging"
+export NAMESPACE="diplomapp-production"
+kubectl config set-context --current --namespace=$NAMESPACE
+
+kubectl logs backend-7f664bf89b-l97vn -p
+ 
+kubectl get all
+
