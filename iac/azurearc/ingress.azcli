@@ -24,3 +24,4 @@ watch curl http://appback.asis.org.ru/weatherforecast
 watch curl http://app.asis.org.ru/weatherforecast
 
 https://www.endycahyono.com/article/hosting-blazor-webassembly-in-nginx
+https://dev.to/___bn___/serve-a-single-page-application-along-with-its-backend-api-thanks-to-nginx-reverse-proxy-2h5c
