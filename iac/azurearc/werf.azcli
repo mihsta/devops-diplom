@@ -23,3 +23,5 @@ cleanup — задание очистки хранилища стадий и con
 
 https://ru.werf.io/documentation/v1.2/advanced/ci_cd/github_actions.html
 cat ~/.kube/config | base64
+
+werf converge --repo ghcr.io/mihsta/diplomapp_local
