@@ -1,28 +1,32 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: diplomapp
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  name: diplomapp-ingress
+  annotations:    
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
+  tls:
+  - hosts:
+    - dapp.asis.org.ru
+    secretName: tls-secret
   rules:
-  - host: frontend.quickstart-application.example.com
+  - host: dapp.asis.org.ru
     http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend
-            port:
-              number: 80
-  - host: backend.quickstart-application.example.com
-    http:
-      paths:
-      - path: /
+      paths:      
+      - path: /api(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: backend
             port:
-              number: 80
+              number: 8080
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 8080

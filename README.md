@@ -1,13 +1,13 @@
-# Links
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mihsta_devops-diplom&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mihsta_devops-diplom) [![Build Status](https://dev.azure.com/mihsta/DevOps-diploma/_apis/build/status/mihsta.devops-diplom?branchName=main)](https://dev.azure.com/mihsta/DevOps-diploma/_build/latest?definitionId=10&branchName=main) [![Production Deployment](https://github.com/mihsta/devops-diplom/actions/workflows/production_deployment.yml/badge.svg)](https://github.com/mihsta/devops-diplom/actions/workflows/production_deployment.yml) [![Staging Deployment](https://github.com/mihsta/devops-diplom/actions/workflows/staging_deployment.yml/badge.svg)](https://github.com/mihsta/devops-diplom/actions/workflows/staging_deployment.yml)
+
+## Links
 **[GITREPO](https://github.com/mihsta/devops-diplom)**
 
 **[DASHBOARD](https://dev.azure.com/mihsta/DevOps-diploma/_dashboards)**
 
-**[CI/CD PIPELINE](https://dev.azure.com/mihsta/DevOps-diploma/_build?definitionId=10&_a=summary)**
+**[CI PIPELINE](https://dev.azure.com/mihsta/DevOps-diploma/_build?definitionId=10&_a=summary)**
 
 **[DOCKER](https://hub.docker.com/repositories)**
-
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mihsta_devops-diplom&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mihsta_devops-diplom) [![Build Status](https://dev.azure.com/mihsta/DevOps-diploma/_apis/build/status/mihsta.devops-diplom?branchName=main)](https://dev.azure.com/mihsta/DevOps-diploma/_build/latest?definitionId=10&branchName=main)
 
 <details>
   <summary>Application description</summary>
@@ -38,15 +38,17 @@
 docker build -f '.\Dockerfile.backend' -t backend . --no-cache
 docker build -f '.\Dockerfile.frontend' -t frontend . --no-cache
 
-dotnet publish .\diplomapp\backend\backend.csproj -c Release
-dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
-
-dotnet pusln .\diplomapp\diplomapp.sln list
+#for test dockerfile
+docker run --rm -it mcr.microsoft.com/dotnet/aspnet:6.0 /bin/sh
 
 docker-compose down
 docker image prune -f
 docker-compose pull
 docker-compose up --detach
+
+dotnet publish .\diplomapp\backend\backend.csproj -c Release
+dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
+dotnet pusln .\diplomapp\diplomapp.sln list
 
 ```
 

@@ -1,0 +1,25 @@
+https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/
+#kubectl install #https://kubernetes.io/ru/docs/tasks/tools/install-kubectl/
+sudo apt-get update && sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+
+#staging namspace
+export NAMESPACE="diplomapp-staging" && kubectl config set-context --current --namespace=$NAMESPACE
+#prod namspace
+export NAMESPACE="diplomapp-production" && kubectl config set-context --current --namespace=$NAMESPACE
+
+#current pod
+export POD=frontend-cfdc577d6-wfdzg
+kubectl get all
+#pod shell
+kubectl exec --stdin --tty $POD -- /bin/bash
+#pod logs
+kubectl logs frontend-cfdc577d6-bffz9 -p
+#set prod context az cli
+export CLUSTER_NAME="funny-hawk-aks" && export RESOURCE_GROUP="funny-hawk-rg" && export SUBSCRIPTION="ProductionSubscription" && az account set --subscription $SUBSCRIPTION  && echo && echo Subscription: $SUBSCRIPTION && echo Clustername: $CLUSTER_NAME && echo Resource group: $RESOURCE_GROUP && echo
+
+az aks stop -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az aks start -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
