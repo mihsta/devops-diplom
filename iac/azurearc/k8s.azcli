@@ -1,12 +1,20 @@
 https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/
 
 
-export NAMESPACE="diplomapp-staging"
-export NAMESPACE="diplomapp-production"
-kubectl config set-context --current --namespace=$NAMESPACE
+#staging namspace
+export NAMESPACE="diplomapp-staging" && kubectl config set-context --current --namespace=$NAMESPACE
+#prod namspace
+export NAMESPACE="diplomapp-production" && kubectl config set-context --current --namespace=$NAMESPACE
 
-kubectl logs backend-7f664bf89b-l97vn -p
- 
+#current pod
+export POD=frontend-745cb4748b-2k646
 kubectl get all
+#pod shell
+kubectl exec --stdin --tty $POD -- /bin/bash
+#pod logs
+kubectl logs $POD -p
+#set prod
+export CLUSTER_NAME="funny-hawk-aks" && export RESOURCE_GROUP="funny-hawk-rg" && export SUBSCRIPTION="ProductionSubscription" && az account set --subscription $SUBSCRIPTION  && echo && echo Subscription: $SUBSCRIPTION && echo Clustername: $CLUSTER_NAME && echo Resource group: $RESOURCE_GROUP && echo
 
-kubectl exec --stdin --tty frontend-967d75576-jbbgw -- /bin/bash
+az aks stop -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az aks start -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP

@@ -22,3 +22,5 @@ watch curl http://stage-app.asis.org.ru/
 watch curl http://stage-appback.asis.org.ru/weatherforecast
 watch curl http://appback.asis.org.ru/weatherforecast
 watch curl http://app.asis.org.ru/weatherforecast
+
+https://www.endycahyono.com/article/hosting-blazor-webassembly-in-nginx
