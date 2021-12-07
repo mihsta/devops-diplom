@@ -49,6 +49,7 @@ docker-compose up --detach
 dotnet publish .\diplomapp\backend\backend.csproj -c Release
 dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
 dotnet pusln .\diplomapp\diplomapp.sln list
+
 ```
 
 </p>
