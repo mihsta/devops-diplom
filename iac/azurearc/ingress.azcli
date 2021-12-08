@@ -198,3 +198,5 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
 
  https://helm.sh/docs/chart_template_guide/getting_started/
  https://helm.sh/docs/chart_template_guide/function_list/
+
+ https://rtfm.co.ua/helm-reusable-chart-named-templates-i-obshhij-chart-dlya-neskolkix-prilozhenij/

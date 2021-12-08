@@ -1,0 +1,4 @@
+apiVersion: v2
+name: diplomapp
+version: 1.0.1
+#dependencies:

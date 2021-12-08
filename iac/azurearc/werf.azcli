@@ -37,3 +37,5 @@ https://docs.docker.com/registry/deploying/
 werf publish --stages-storage :local --images-repo localhost:5000/diplomapp --tag-custom v0.1.0
 
 https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
+
+helm list -A
