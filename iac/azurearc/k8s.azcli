@@ -21,5 +21,10 @@ kubectl logs frontend-cfdc577d6-bffz9 -p
 #set prod context az cli
 export CLUSTER_NAME="funny-hawk-aks" && export RESOURCE_GROUP="funny-hawk-rg" && export SUBSCRIPTION="ProductionSubscription" && az account set --subscription $SUBSCRIPTION  && echo && echo Subscription: $SUBSCRIPTION && echo Clustername: $CLUSTER_NAME && echo Resource group: $RESOURCE_GROUP && echo
 
-az aks stop -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
-az aks start -name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+time az aks stop --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP 
+#5m start
+time bash start.sh
+time az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+time bash stop.sh
+
+curl -k 'https://localhost:6443/readyz?verbose&exclude=etcd'

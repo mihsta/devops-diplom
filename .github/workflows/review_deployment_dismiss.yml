@@ -7,6 +7,7 @@ jobs:
   dismiss:
     name: Dismiss
     runs-on: ubuntu-latest
+    environment: stage-env
     steps:
 
       - name: Checkout code

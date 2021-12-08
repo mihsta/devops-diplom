@@ -16,7 +16,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/api", [EnableCors("allowAny")] () =>
+app.MapGet("/", [EnableCors("allowAny")] () =>
 {
     var forecast = Enumerable.Range(1, 10).Select(index =>
        new WeatherForecast

@@ -2,15 +2,15 @@ version: '3.1'
 services:
   frontend:
     build: 
-      context: .
-      dockerfile: Dockerfile.frontend
+      context: frontend
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - 8080:80   
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile.backend    
+      context: backend
+      dockerfile: Dockerfile  
     restart: always
     ports:
       - 5030:80

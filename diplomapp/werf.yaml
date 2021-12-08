@@ -1,0 +1,13 @@
+#https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
+
+configVersion: 1
+project: diplomapp
+
+---
+image: frontend
+dockerfile: Dockerfile
+context: frontend
+---
+image: backend
+dockerfile: Dockerfile
+context: backend

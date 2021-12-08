@@ -7,6 +7,8 @@
 
 **[CI PIPELINE](https://dev.azure.com/mihsta/DevOps-diploma/_build?definitionId=10&_a=summary)**
 
+**[SLA Report](https://synthetics.eu.newrelic.com/report/rT3dtL0wSMd?view=daily-sla-report)**
+
 **[DOCKER](https://hub.docker.com/repositories)**
 
 <details>
@@ -48,7 +50,7 @@ docker-compose up --detach
 
 dotnet publish .\diplomapp\backend\backend.csproj -c Release
 dotnet publish .\diplomapp\frontend\frontend.csproj -c Release
-dotnet pusln .\diplomapp\diplomapp.sln list
+dotnet build sln .\diplomapp\diplomapp.sln
 
 ```
 
@@ -71,6 +73,7 @@ git tag
 git push --tag
 git tag --delete 1.0.1
 git push --delete origin tagname
+git merge --abort
 ```
 
 </p>
