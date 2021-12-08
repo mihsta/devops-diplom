@@ -23,7 +23,7 @@ jobs:
         env:
           WERF_SET_ENV_URL: "global.env_url=http://staging-diplomapp.kube.asis.org.ru"
           WERF_DIR: "diplomapp"
-          WERF_KUBE_CONTEXT: staging
+          #WERF_KUBE_CONTEXT: staging
 
       - name: Print review URL
         env:

@@ -23,4 +23,4 @@ jobs:
         env:
           WERF_SET_ENV_URL: "global.env_url=https://diplomapp.asis.org.ru"
           WERF_DIR: "diplomapp"
-          WERF_KUBE_CONTEXT: production
+          #WERF_KUBE_CONTEXT: production
