@@ -7,8 +7,10 @@ ENV ASPNETCORE_URLS="http://*:8080"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
 WORKDIR /src
-COPY ["diplomapp/backend", "."]
+COPY [".", "."]
 RUN dotnet publish "backend.csproj" -c Release -o /app/publish
+
+
 
 FROM base AS final
 
@@ -16,7 +18,6 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 #HEALTHCHECK --interval=15s --timeout=3s CMD curl -f http://localhost/weatherforecast
-#chown vagrant:vagrant /home/vagrant/.kube/config
 
 RUN useradd -U -u 1000 -m -s /bin/sh appuser && chown appuser:appuser /app /app/* 
 USER appuser
