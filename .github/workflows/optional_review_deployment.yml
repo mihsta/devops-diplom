@@ -5,6 +5,9 @@ on:
       - labeled
       - unlabeled
       - synchronize
+    branches:      
+      - '**'            # matches every branch
+      - '!production'   # excludes production
 jobs:
 
   optional_converge_or_dismiss:
