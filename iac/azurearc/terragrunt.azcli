@@ -7,4 +7,3 @@ sudo snap install terragrunt
 
 #https://docs.microsoft.com/en-us/azure/aks/cluster-container-registry-integration?tabs=azure-cli#create-a-new-aks-cluster-with-acr-integration
 # Authenticate with Azure Container Registry from Azure Kubernetes Service
-
