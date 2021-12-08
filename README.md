@@ -73,6 +73,7 @@ git tag
 git push --tag
 git tag --delete 1.0.1
 git push --delete origin tagname
+git merge --abort
 ```
 
 </p>
