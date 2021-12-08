@@ -21,3 +21,5 @@ jobs:
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         env:
           WERF_SET_ENV_URL: "global.env_url=https://diplomapp.asis.org.ru"
+          WERF_DIR: "diplomapp"
+          WERF_KUBE_CONTEXT: production

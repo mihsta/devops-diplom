@@ -31,9 +31,11 @@ jobs:
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         if: contains( github.event.pull_request.labels.*.name, 'review' )
 
-      - name: Print URL        
+      - name: Print review URL
+        env:
+          ENV_URL: "review-${{ github.event.number }}.trdl.dev.flant.com"
         run: |
-            echo $GITHUB_ENV
+            echo "https://${ENV_URL}"
 
       - name: Dismiss
         uses: werf/actions/dismiss@v1.2
