@@ -7,7 +7,7 @@ jobs:
   converge:
     name: Converge
     runs-on: ubuntu-latest
-    environment: prod-env
+    environment: stage-env
     steps:
 
       - name: Checkout code
