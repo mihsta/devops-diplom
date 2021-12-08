@@ -7,6 +7,8 @@
 
 **[CI PIPELINE](https://dev.azure.com/mihsta/DevOps-diploma/_build?definitionId=10&_a=summary)**
 
+**[SLA Report](https://synthetics.eu.newrelic.com/report/rT3dtL0wSMd?view=daily-sla-report)**
+
 **[DOCKER](https://hub.docker.com/repositories)**
 
 <details>
