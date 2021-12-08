@@ -168,3 +168,23 @@ kubectl get certificate --namespace ingress-basic
 https://hello-world-ingress.asis.org.ru
 https://hello-world-ingress.asis.org.ru/hello-world-two
 https://hello-world-ingress.asis.org.ru/static
+
+
+kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/px.dev_viziers.yaml && \
+kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/olm_crd.yaml && \
+helm repo add newrelic https://helm-charts.newrelic.com && helm repo update && \
+kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newrelic/nri-bundle \
+ --set global.licenseKey=eu01xx85e2642d964320e9f2da10158665e0NRAL \
+ --set global.cluster=aks-diplomapp \
+ --namespace=newrelic \
+ --set newrelic-infrastructure.privileged=true \
+ --set global.lowDataMode=true \
+ --set ksm.enabled=true \
+ --set prometheus.enabled=true \
+ --set kubeEvents.enabled=true \
+ --set logging.enabled=true \
+ --set newrelic-pixie.enabled=true \
+ --set newrelic-pixie.apiKey=px-api-248fb9db-0f05-4576-a42c-8453955028b4 \
+ --set pixie-chart.enabled=true \
+ --set pixie-chart.deployKey=px-dep-1aede3d0-31a3-4695-bb5a-6a2e417127b4 \
+ --set pixie-chart.clusterName=aks-diplomapp 
