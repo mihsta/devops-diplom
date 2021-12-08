@@ -10,6 +10,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "/iac/terraform" # Location of package manifests
     schedule:
       interval: "daily"
