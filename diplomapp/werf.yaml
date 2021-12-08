@@ -5,9 +5,9 @@ project: diplomapp
 
 ---
 image: frontend
-dockerfile: Dockerfile.frontend
-context: .
+dockerfile: Dockerfile
+context: frontend
 ---
 image: backend
-dockerfile: Dockerfile.backend
-context: .
+dockerfile: Dockerfile
+context: backend
