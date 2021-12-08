@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+        - name: registrysecret
+      containers:
+      - image: {{ .Values.werf.image.frontend }}
+        name: frontend
+        ports:
+        - containerPort: 8080
+          name: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  type: ClusterIP
+  ports:
+  - name: "frontend-service"
+    port: 8080
+  selector:
+    app: frontend
