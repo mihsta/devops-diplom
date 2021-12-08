@@ -24,4 +24,10 @@ jobs:
       
       - name: Print URL
         run: |
-            echo "https://${WERF_SET_ENV_URL}"
+            echo "https://${ENV_URL}"
+
+      - name: Print review URL
+        env:
+          ENV_URL: "review-${{ github.event.number }}.diplomapp.dev.asis.org.ru"
+        run: |
+            echo "https://${ENV_URL}"
