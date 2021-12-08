@@ -31,7 +31,7 @@ jobs:
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         if: contains( github.event.pull_request.labels.*.name, 'review' )
 
-      - name: Print review URL        
+      - name: Print URL        
         run: |
             echo $GITHUB_ENV
 
