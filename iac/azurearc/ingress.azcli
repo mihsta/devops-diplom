@@ -188,3 +188,5 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
  --set pixie-chart.enabled=true \
  --set pixie-chart.deployKey=px-dep-1aede3d0-31a3-4695-bb5a-6a2e417127b4 \
  --set pixie-chart.clusterName=aks-diplomapp 
+
+ https://www.yogihosting.com/kubernetes-ingress-aspnet-core/
