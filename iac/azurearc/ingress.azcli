@@ -190,3 +190,11 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
  --set pixie-chart.clusterName=aks-diplomapp 
 
  https://www.yogihosting.com/kubernetes-ingress-aspnet-core/
+
+
+ https://ru.werf.io/documentation/v1.1/guides/github_ci_cd_integration.html
+
+ https://github.com/werf/trdl/blob/f502e0881f92ba48a392d839a7a72ddf82962bad/docs/.helm/templates/20-ingress.yaml
+
+ https://helm.sh/docs/chart_template_guide/getting_started/
+ https://helm.sh/docs/chart_template_guide/function_list/
