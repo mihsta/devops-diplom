@@ -28,7 +28,8 @@ werf converge --repo ghcr.io/mihsta/diplomapp_local
 
 #staging
 werf converge --env staging --dev=true --repo=ghcr.io/mihsta/devops-diplom/diplomapp
-werf converge --env production --dev=true --repo=ghcr.io/mihsta/devops-diplom/diplomapp
+
+werf converge --env production --repo=ghcr.io/mihsta/devops-diplom/diplomapp
 
 
 docker run -d -p 5000:5000 --restart=always --name registry registry:2
