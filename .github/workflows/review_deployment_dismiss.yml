@@ -23,3 +23,5 @@ jobs:
         with:
           env: review-${{ github.event.number }}
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
+        env:          
+          WERF_DIR: "diplomapp"
