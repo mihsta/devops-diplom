@@ -1,7 +1,12 @@
 name: Review Deployment Dismiss
 on:
   pull_request:
-    types: [closed]
+    branches:      
+      - '**'            # matches every branch
+      - '!production'   # excludes production
+    types:
+      - closed
+
 jobs:
 
   dismiss:
