@@ -11,7 +11,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.global.env_url }}
+    - {{ $host }}
     secretName: tls-secret
   rules:
   - host: {{ .Values.global.env_url }}
