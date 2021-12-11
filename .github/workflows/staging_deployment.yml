@@ -1,7 +1,7 @@
 name: Staging Deployment
 on:
   push:
-    branches: [production] #return main 
+    branches: [main]
 jobs:
 
   converge:
