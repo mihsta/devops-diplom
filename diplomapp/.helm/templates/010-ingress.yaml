@@ -14,7 +14,7 @@ spec:
     - {{ .Values.global.env_url }}
     secretName: tls-secret
   rules:
-  - host: diplomapp.asis.org.ru
+  - host: {{ .Values.global.env_url }}
     http:
       paths:      
       - path: /(.*)
