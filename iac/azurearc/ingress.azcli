@@ -202,3 +202,4 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
 https://stackoverflow.com/questions/52742241/dynamically-accessing-values-depending-on-variable-values-in-a-helm-chart
 # Templates
 https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
+https://codefresh.io/docs/docs/new-helm/helm-best-practices/
