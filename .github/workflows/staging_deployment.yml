@@ -23,3 +23,4 @@ jobs:
         env:
           WERF_SET_ENV_URL: "global.env_url=diplomapp.staging.asis.org.ru"
           WERF_DIR: "diplomapp"      
+
