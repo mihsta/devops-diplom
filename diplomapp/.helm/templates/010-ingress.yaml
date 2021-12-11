@@ -24,9 +24,9 @@ spec:
         backend:
           serviceName: {{ .Chart.Name }}
           servicePort: 80
-  rules:
 {{- /*
-   - host: stage.diplomapp.asis.org.ru
+   rules:
+  - host: stage.diplomapp.asis.org.ru
     http:
       paths:      
       - path: /(.*)
@@ -42,6 +42,6 @@ spec:
           service:
             name: backend
             port:
-              number: 8080
- 
+              number: 8080 
 */ -}}
+
