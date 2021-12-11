@@ -7,6 +7,7 @@ RUN dotnet publish "frontend.csproj" -c Release -o /app/publish
 
 FROM nginx:alpine AS final
 
+
 WORKDIR /var/www/web
 COPY --from=publish /app/publish/wwwroot .
 COPY ["./nginx.conf", "/etc/nginx/nginx.conf"]
