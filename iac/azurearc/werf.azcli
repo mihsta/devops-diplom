@@ -48,3 +48,17 @@ curl -X POST \
     -H "Authorization: token <token>" \
     --data '{"event_type": "cleanup"}' \
     https://api.github.com/repos/mihsta/devops-diplom/dispatches
+
+
+https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
+export CR_PAT=
+docker login ghcr.io -u mihsta --password-stdin $CR_PAT 
+
+https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
+
+werf converge --env production --repo=ghcr.io/mihsta/devops-diplom/diplomapp --dir=diplomapp
+
+https://ru.werf.io/documentation/v1.2/reference/cli/werf_dismiss.html
+
+werf dismiss --env production --dir diplomapp
+werf dismiss --env staging --dir diplomapp

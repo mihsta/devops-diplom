@@ -1,7 +1,7 @@
 name: Staging Deployment
 on:
   push:
-    branches: [main] 
+    branches: [production] #return main 
 jobs:
 
   converge:
@@ -21,7 +21,7 @@ jobs:
           env: staging
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         env:
-          WERF_SET_ENV_URL: "global.env_url=http://staging-diplomapp.kube.asis.org.ru"
+          WERF_SET_ENV_URL: "global.env_url=staging-diplomapp.kube.asis.org.ru"
           WERF_DIR: "diplomapp"
           #WERF_KUBE_CONTEXT: staging
 
