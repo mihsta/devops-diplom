@@ -200,3 +200,5 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
 
  https://rtfm.co.ua/helm-reusable-chart-named-templates-i-obshhij-chart-dlya-neskolkix-prilozhenij/
 https://stackoverflow.com/questions/52742241/dynamically-accessing-values-depending-on-variable-values-in-a-helm-chart
+# Templates
+https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
