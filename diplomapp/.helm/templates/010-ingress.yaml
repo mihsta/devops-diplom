@@ -1,8 +1,7 @@
-{{- $host := pluck .Values.global.env .Values.host | first | default .Values.host._default  }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-production
+  name: diplomapp-ingress-stage
   annotations:    
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$1
@@ -11,18 +10,9 @@ metadata:
 spec:
   tls:
   - hosts:
-      - {{ $host }}
+    - stage.diplomapp.asis.org.ru
     secretName: tls-secret
   rules:
-  - host: {{ $host }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: frontend
-          servicePort: 80
-{{- /*
-   rules:
   - host: stage.diplomapp.asis.org.ru
     http:
       paths:      
@@ -39,6 +29,4 @@ spec:
           service:
             name: backend
             port:
-              number: 8080 
-*/ -}}
-
+              number: 8080
