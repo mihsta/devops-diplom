@@ -22,11 +22,5 @@ jobs:
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         env:
           WERF_SET_ENV_URL: "global.env_url=diplomapp.staging.asis.org.ru"
-          WERF_DIR: "diplomapp"
-          #WERF_KUBE_CONTEXT: staging
+          WERF_DIR: "diplomapp"      
 
-      - name: Print review URL
-        env:
-          ENV_URL: "review-${{ github.event.number }}.diplomapp.dev.asis.org.ru"
-        run: |
-            echo "https://${ENV_URL}"
