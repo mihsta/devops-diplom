@@ -1,0 +1,3 @@
+host:
+  production: diplomapp.asis.org.ru  
+  _default: diplomapp.staging.asis.org.ru
