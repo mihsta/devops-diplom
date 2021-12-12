@@ -24,7 +24,7 @@ spec:
             name: frontend
             port:
               number: 8080
-      - path: /api(/|$)(.*)
+      - path: /Track(/|$)(.*)
         pathType: Prefix
         backend:
           service:
