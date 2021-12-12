@@ -1,7 +1,11 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mihsta_devops-diplom&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mihsta_devops-diplom) [![Build Status](https://dev.azure.com/mihsta/DevOps-diploma/_apis/build/status/mihsta.devops-diplom?branchName=main)](https://dev.azure.com/mihsta/DevOps-diploma/_build/latest?definitionId=10&branchName=main) [![Staging Deployment](https://github.com/mihsta/devops-diplom/actions/workflows/staging_deployment.yml/badge.svg?branch=main)](https://github.com/mihsta/devops-diplom/actions/workflows/staging_deployment.yml) [![Production Deployment](https://github.com/mihsta/devops-diplom/actions/workflows/production_deployment.yml/badge.svg?branch=production)](https://github.com/mihsta/devops-diplom/actions/workflows/production_deployment.yml)
 
-## Links
-**[STAGE](https://diplomapp.staging.asis.org.ru)** **[PROD](https://diplomapp.asis.org.ru)**
+<details>
+  <summary>Links</summary>
+
+**[STAGE](https://diplomapp.staging.asis.org.ru)** 
+ 
+**[PROD](https://diplomapp.asis.org.ru)**
 
 **[GITREPO](https://github.com/mihsta/devops-diplom)**
 
@@ -12,6 +16,8 @@
 **[SLA Report](https://synthetics.eu.newrelic.com/report/rT3dtL0wSMd?view=daily-sla-report)**
 
 **[DOCKER](https://hub.docker.com/repositories)**
+  
+</details>
 
 <details>
   <summary>Application description</summary>
