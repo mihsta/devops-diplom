@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Net.Http.Json;
 
-namespace TracksMusicApi
+namespace backend
 {
     public class TrackService
     {
