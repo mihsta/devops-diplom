@@ -53,7 +53,7 @@ else
     protected override async Task OnInitializedAsync()
     {       
 
-        MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("http://localhost:5252/Track?artistName=Pink%20Floyd");
+        MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track?artistName=Pink%20Floyd");
 
     }  
 }
