@@ -24,7 +24,27 @@ spec:
             name: frontend
             port:
               number: 8080
-      - path: /api(/|$)(.*)
+---              
+{{- $host := pluck .Values.global.env .Values.host | first | default .Values.host._default  }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: staging-backend
+  annotations:    
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /Track$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+  - hosts:
+    - {{ $host }}
+    secretName: tls-secret
+  rules:
+  - host: {{ .Values.global.env_url }}
+    http:
+      paths:      
+      - path: /Track(|$)(.*)
         pathType: Prefix
         backend:
           service:

@@ -33,7 +33,10 @@ jobs:
         with:
           env: review-${{ github.event.number }}
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
+        env:          
+          WERF_DIR: "diplomapp"
         if: contains( github.event.pull_request.labels.*.name, 'review' )
+
 
       - name: Print review URL
         env:
@@ -46,4 +49,8 @@ jobs:
         with:
           env: review-${{ github.event.number }}
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
+        env:          
+          WERF_DIR: "diplomapp"
         if: "!contains( github.event.pull_request.labels.*.name, 'review' )"
+
+        

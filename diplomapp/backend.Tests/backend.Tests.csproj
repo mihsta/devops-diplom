@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\backend\backend.csproj" />
-  </ItemGroup>
-
 </Project>

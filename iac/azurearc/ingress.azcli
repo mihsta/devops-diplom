@@ -126,7 +126,9 @@ az network dns record-set a add-record \
     --ipv4-address 20.103.107.191
     
 #curl bysy box
-kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm
+kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm 
+
+kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm -n diplomapp-staging
 
 # Label the ingress-basic namespace to disable resource validation
 kubectl label namespace ingress-basic cert-manager.io/disable-validation=true
@@ -203,3 +205,5 @@ https://stackoverflow.com/questions/52742241/dynamically-accessing-values-depend
 # Templates
 https://ru.werf.io/documentation/v1.2/reference/werf_yaml.html
 https://codefresh.io/docs/docs/new-helm/helm-best-practices/
+https://github.com/Shopify/ingress/blob/master/docs/user-guide/nginx-configuration/annotations.md#server-snippet
+https://regex101.com/
