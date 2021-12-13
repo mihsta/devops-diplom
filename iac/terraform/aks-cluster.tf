@@ -3,17 +3,14 @@
 # az aks get-credentials --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 # az aks browse --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 
-
-
-
-resource "random_pet" "prefix" {}
+# Impurt https://cloudskills.io/blog/terraform-azure-07
 
 provider "azurerm" {
   features {}
 }
 
 resource "azurerm_resource_group" "default" {
-  name     = "${random_pet.prefix.id}-rg"
+  name     = "funny-hawk-rg"
   location = "West Europe"
 
   tags = {
@@ -22,31 +19,17 @@ resource "azurerm_resource_group" "default" {
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
-  name                = "${random_pet.prefix.id}-aks"
+  name                = "funny-hawk-aks"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
-  dns_prefix          = "${random_pet.prefix.id}-k8s"
+  dns_prefix          = "funny-hawk-k8s"
 
   default_node_pool {
     name            = "default"
-    node_count      = 1
+    node_count      = 2
     vm_size         = "Standard_B2s"
     os_disk_size_gb = 30
   }
-
-resource "azurerm_container_registry" "default" {
-  name                = "acr1"
-  resource_group_name = local.rgname
-  location            = local.rgloc
-  sku                 = "Standard"
-  admin_enabled       = true
-
-  tags = {
-    environment = "diplomapp"
-  }
-}
-
-
 
   service_principal {
     client_id     = var.appId
