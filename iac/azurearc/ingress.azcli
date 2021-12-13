@@ -117,13 +117,13 @@ az network dns record-set a add-record \
     --resource-group DefaultResourceGroup-WEU \
     --zone-name asis.org.ru \
     --record-set-name "*" \
-    --ipv4-address 20.103.107.191
+    --ipv4-address 20.82.67.140
 
 az network dns record-set a add-record \
     --resource-group DefaultResourceGroup-WEU \
     --zone-name asis.org.ru \
     --record-set-name "@" \
-    --ipv4-address 20.103.107.191
+    --ipv4-address 20.82.67.140
     
 #curl bysy box
 kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm 
