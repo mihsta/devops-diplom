@@ -126,7 +126,9 @@ az network dns record-set a add-record \
     --ipv4-address 20.103.107.191
     
 #curl bysy box
-kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm
+kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm 
+
+kubectl run curl-test --image=radial/busyboxplus:curl -i --tty --rm -n diplomapp-staging
 
 # Label the ingress-basic namespace to disable resource validation
 kubectl label namespace ingress-basic cert-manager.io/disable-validation=true
