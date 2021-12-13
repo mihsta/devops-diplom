@@ -51,14 +51,7 @@ spec:
   - host: {{ .Values.global.env_url }}
     http:
       paths:      
-      - path: /(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend
-            port:
-              number: 8080
-      - path: /Track/(/|$)(.*)
+      - path: /Track(|$)(.*)
         pathType: Prefix
         backend:
           service:
