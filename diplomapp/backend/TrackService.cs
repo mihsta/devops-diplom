@@ -16,7 +16,7 @@ namespace backend
         public async Task<IEnumerable<InternalMusicTrack>> GetTracksAsync(string artistName, CancellationToken token)
         {
             try
-            {
+            {                
                 var externalTracks = await client.GetFromJsonAsync<Root>($"https://itunes.apple.com/search?term={artistName}&limit=200&offset=1", token);
                 var internalTracks = new List<InternalMusicTrack>();
                 foreach (var externalTrack in externalTracks.results.Where(e => e.artistName == artistName))
@@ -33,13 +33,7 @@ namespace backend
                     internalTracks.Add(internalTrack);
                 }
 
-                return internalTracks;
-                
-                //foreach (var internalTrack in internalTracks)
-                //{
-                //    Console.WriteLine(internalTrack.TrackName);
-                //}
-
+                return internalTracks;             
             }
             catch (HttpRequestException e)
             {
