@@ -95,10 +95,6 @@ az connectedk8s proxy -n $CLUSTER_NAME -g $RESOURCE_GROUP --token $TOKEN
 
 
 
-
-
-
-
 #TODO
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/azure-rbac
 #https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-arc-enabled-clusters
