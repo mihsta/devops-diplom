@@ -4,10 +4,6 @@
 # az aks browse --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 
 
-
-
-resource "random_pet" "prefix" {}
-
 provider "azurerm" {
   features {}
 }
@@ -33,20 +29,6 @@ resource "azurerm_kubernetes_cluster" "default" {
     vm_size         = "Standard_B2s"
     os_disk_size_gb = 30
   }
-
-resource "azurerm_container_registry" "default" {
-  name                = "acr1"
-  resource_group_name = local.rgname
-  location            = local.rgloc
-  sku                 = "Standard"
-  admin_enabled       = true
-
-  tags = {
-    environment = "diplomapp"
-  }
-}
-
-
 
   service_principal {
     client_id     = var.appId
