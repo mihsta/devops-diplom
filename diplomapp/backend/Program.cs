@@ -1,3 +1,6 @@
+//https://metanit.com/sharp/entityframeworkcore/2.15.php
+
+
 using backend;
 
 var builder = WebApplication.CreateBuilder(args);

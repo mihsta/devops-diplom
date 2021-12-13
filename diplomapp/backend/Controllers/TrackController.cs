@@ -17,10 +17,34 @@ namespace backend.Controllers
             _trackService = trackService;
         }
 
-        [HttpGet(Name = "GetTracks")]
-        public async Task<IEnumerable<InternalMusicTrack>> Get(string artistName, CancellationToken token)
+        [HttpGet("GetAvailabeYears/years")]
+        public async Task<IEnumerable<int>> GetAvailabeYears(CancellationToken token)
         {
-            return await _trackService.GetTracksAsync(artistName, token);
+            return _trackService.GetAvailabeYears();
+        }
+
+        [HttpGet("GetAllTracks")]
+        public async Task<IEnumerable<InternalMusicTrack>> GetAllTracks(CancellationToken token)
+        {
+            return _trackService.GetAllTracksFromDb();
+        }
+
+        [HttpGet("GetTracksByYear")]
+        public async Task<IEnumerable<InternalMusicTrack>> GetTracksByYears(int year, CancellationToken token)
+        {
+            return _trackService.GetTracksByYearsFromDb(year);
+        }
+
+        [HttpDelete("DeleteTracks")]
+        public async Task DeleteTracks(CancellationToken token)
+        {
+            _trackService.DeleteAllTracks();
+        }
+
+        [HttpPost("UpdateTracks")]
+        public async Task UpdateTracks(string artistName, CancellationToken token)
+        {
+            _trackService.UpdateAsync(artistName, token);
         }
     }
 }
