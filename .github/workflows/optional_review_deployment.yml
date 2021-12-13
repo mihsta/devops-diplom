@@ -34,7 +34,9 @@ jobs:
           env: review-${{ github.event.number }}
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         if: contains( github.event.pull_request.labels.*.name, 'review' )
-
+        env:          
+          WERF_DIR: "diplomapp"
+          
       - name: Print review URL
         env:
           ENV_URL: "review-${{ github.event.number }}.trdl.dev.flant.com"
