@@ -2,6 +2,7 @@
 # az ad sp create-for-rbac --name "terraform_diplomapp" --skip-assignment
 # az aks get-credentials --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 # az aks browse --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
+# Impurt https://cloudskills.io/blog/terraform-azure-07
 
 
 provider "azurerm" {
@@ -9,7 +10,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "default" {
-  name     = "${random_pet.prefix.id}-rg"
+  name     = "funny-hawk-rg"
   location = "West Europe"
 
   tags = {
@@ -18,10 +19,10 @@ resource "azurerm_resource_group" "default" {
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
-  name                = "${random_pet.prefix.id}-aks"
+  name                = "funny-hawk-aks"
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
-  dns_prefix          = "${random_pet.prefix.id}-k8s"
+  dns_prefix          = "funny-hawk-k8s"
 
   default_node_pool {
     name            = "default"
