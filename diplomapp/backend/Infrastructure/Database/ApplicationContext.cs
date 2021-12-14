@@ -12,7 +12,7 @@ namespace backend.Infrastructure.Database
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=tcp:diplomapp.database.windows.net,1433;Initial Catalog=diplomapp-db;Persist Security Info=False;User ID=asisorg;Password=;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("");
         }
     }
 }
