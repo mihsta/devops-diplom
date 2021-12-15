@@ -1,3 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: application-config
+data:
+  appsettings.json: {{ .Values.global.appconf }} 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,6 +21,10 @@ spec:
       labels:
         app: backend
     spec:
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: application-config    
       imagePullSecrets:
         - name: registrysecret
       containers:
@@ -24,11 +35,8 @@ spec:
           name: backend
         volumeMounts:
           - name: application-config
+            readOnly: true
             mountPath: /app/config
-      volumes:
-      - name: application-config
-        secret:
-          name: application-config
 ---
 apiVersion: v1
 kind: Service
@@ -43,11 +51,5 @@ spec:
     port: 8080    
   selector:
     app: backend
----
-apiVersion: v1
-kind: Secret
-metadata:
-    name: application-config
-type: Opaque
-data: 
-  appsettings.json: {{ .Values.global.appconf }}  
+
+
