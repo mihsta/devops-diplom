@@ -19,6 +19,9 @@ spec:
       containers:
       - image: {{ .Values.werf.image.backend }}
         name: backend
+        env:
+        - name: CONNECTION_STRING
+          value: {{ .Values.global.sql }}
         ports:
         - containerPort: 8080
           name: backend
@@ -28,10 +31,7 @@ spec:
             memory: 128Mi
           limits:
             cpu: 250m
-            memory: 256Mi
-        volumeMounts:
-          - name: azure
-            mountPath: /mnt/azure
+            memory: 256Mi  
       volumes:
       - name: azure
         azureFile:
