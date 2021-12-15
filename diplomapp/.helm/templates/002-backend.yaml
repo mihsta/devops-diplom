@@ -49,4 +49,4 @@ kind: Secret
 metadata:
     name: application-config
 type: Opaque
-data: {{ .Values.global.appconf }}  
+data: ${{ .Values.global.appconf }}  
