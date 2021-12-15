@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: application-config
 data:
-  appsettings.json: ${{ .Values.global.appconf }} 
+  appsettings.json: dGVzdAo= 
 ---
 apiVersion: apps/v1
 kind: Deployment
