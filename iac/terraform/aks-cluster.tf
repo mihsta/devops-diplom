@@ -5,6 +5,9 @@
 
 # Impurt https://cloudskills.io/blog/terraform-azure-07
 
+resource "random_pet" "prefix" {}
+
+
 provider "azurerm" {
   features {}
 }

@@ -28,3 +28,16 @@ time az aks start --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
 time bash stop.sh
 
 curl -k 'https://localhost:6443/readyz?verbose&exclude=etcd'
+
+
+https://docs.microsoft.com/ru-ru/azure/aks/csi-secrets-store-driver
+
+
+export CLUSTER_NAME="funny-hawk-aks"
+export RESOURCE_GROUP="funny-hawk-rg"
+az account set --subscription "ProductionSubscription"
+
+
+az aks enable-addons --addons azure-keyvault-secrets-provider --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+
+kubectl exec busybox-secrets-store-inline -- ls /mnt/secrets-store/

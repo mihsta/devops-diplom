@@ -7,13 +7,13 @@
 #https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/cluster-connect
 #Export env var example
 export CLUSTER_NAME="AzureArcDevOnPrem"
-export CLUSTER_NAME="AzureArcDevOnPremTest"
 export RESOURCE_GROUP="AzureArcDev"
-
+az account set --subscription "DevTestSubscription"
 
 export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="funny-hawk-rg"
 az account set --subscription "ProductionSubscription"
+
 #AKS get cred
 az aks get-credentials --resource-group $RESOURCE_GROUP  --name $CLUSTER_NAME
 
@@ -27,9 +27,9 @@ echo $REGION
 
 #install AzureCLI
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-az upgrade
-az login
 
+az login
+az upgrade
 
 #Install the connectedk8s Azure CLI extension of version >= 1.2.0:
 az extension add --name connectedk8s
@@ -108,3 +108,6 @@ kubectl api-resources --verbs=list --namespaced -o name \
 #busybox for test
 kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 watch kubectl get all -A
+
+#https://kubernetes.github.io/ingress-nginx/deploy/baremetal/
+#https://github.com/p0bailey/k42s
