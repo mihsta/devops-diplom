@@ -27,4 +27,4 @@ jobs:
 
       - name: Print review SQL
         run: |
-            echo "${WERF_SET_ENV_SQL}"
+            echo ${WERF_SET_ENV_SQL}
