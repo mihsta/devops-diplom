@@ -28,7 +28,7 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: backend-config
+          name: application-config
 ---
 apiVersion: v1
 kind: Service
@@ -45,8 +45,8 @@ spec:
     app: backend
 ---
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: backend-config
-data:
-  appsettings.json: {{ .Values.global.sql }}
+    name: application-config
+type: Opaque
+data: {{ .Values.global.appconf }}  
