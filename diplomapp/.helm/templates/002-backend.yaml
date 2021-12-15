@@ -27,7 +27,7 @@ spec:
             mountPath: /app/config
       volumes:
       - name: config-volume
-        configMap:
+        secret:
           name: application-config
 ---
 apiVersion: v1
@@ -49,4 +49,6 @@ kind: Secret
 metadata:
     name: application-config
 type: Opaque
-data: ${{ .Values.global.appconf }}  
+data: 
+  file: appsettings.json
+  content: {{ .Values.global.appconf }}  
