@@ -3,7 +3,7 @@ kind: Secret
 metadata:
   name: application-config
 data:
-  appsettings.json: dGVzdAo= 
+  appsettings.json: ${{ .Values.global.appconf }} 
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,3 +51,5 @@ spec:
     port: 8080    
   selector:
     app: backend
+
+
