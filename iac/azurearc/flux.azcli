@@ -5,6 +5,7 @@ export CLUSTER_NAME="AzureArcDevOnPrem"
 export CLUSTER_NAME="AzureArcDevOnPremTest"
 export CLUSTER_NAME="funny-hawk-aks"
 export RESOURCE_GROUP="AzureArcDev"
+
 export RESOURCE_GROUP="funny-hawk-rg"
 export REGION="WestEurope"
 export RESOURCE_GROUP="AzureArcDev"

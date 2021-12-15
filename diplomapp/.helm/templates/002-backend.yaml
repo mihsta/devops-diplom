@@ -22,13 +22,23 @@ spec:
         ports:
         - containerPort: 8080
           name: backend
-        volumeMounts:
-          - name: config-volume
-            mountPath: /app/config
+        resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+      volumeMounts:
+        - name: azure
+          mountPath: /mnt/azure
       volumes:
-      - name: config-volume
-        configMap:
-          name: backend-config
+      - name: azure
+        azureFile:
+          secretName: azure-secret
+          shareName: aksshare
+          readOnly: false
+      
 ---
 apiVersion: v1
 kind: Service
@@ -44,14 +54,3 @@ spec:
   selector:
     app: backend
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: backend-config
-data:
-  appsettings.json: |-
-    {
-      "Logging":{"LogLevel":{"Default":"Information","Microsoft.AspNetCore":"Warning"}},
-      "AllowedHosts":"*",
-      "ConnectionStrings":{"diplomappdb":{{ .Values.global.sql | indent 8 }}}
-    }
