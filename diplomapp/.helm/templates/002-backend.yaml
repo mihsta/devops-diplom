@@ -23,15 +23,15 @@ spec:
         - containerPort: 8080
           name: backend
         resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-        limits:
-          cpu: 250m
-          memory: 256Mi
-      volumeMounts:
-        - name: azure
-          mountPath: /mnt/azure
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        volumeMounts:
+          - name: azure
+            mountPath: /mnt/azure
       volumes:
       - name: azure
         azureFile:
