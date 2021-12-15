@@ -59,7 +59,7 @@ data:
       },
       "AllowedHosts": "*",
       "ConnectionStrings": {
-        "diplomappdb": 
+        "diplomappdb":  
           {{ .Values.global.sql | indent 8 }}
       }
     }
