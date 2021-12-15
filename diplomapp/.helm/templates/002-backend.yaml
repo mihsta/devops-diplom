@@ -49,16 +49,4 @@ kind: ConfigMap
 metadata:
   name: backend-config
 data:
-  appsettings.json: |-
-    {
-      "Logging": {
-        "LogLevel": {
-          "Default": "Information",
-          "Microsoft.AspNetCore": "Warning"
-        }
-      },
-      "AllowedHosts": "*",
-      "ConnectionStrings": {
-        "diplomappdb": {{ .Values.global.sql }}
-      }
-    }
+  appsettings.json: {{ .Values.global.sql }}
