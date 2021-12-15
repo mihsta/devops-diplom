@@ -1,6 +1,7 @@
 ﻿using backend.Infrastructure.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using System.Collections;
 
 namespace backend.Infrastructure.Database
 {
@@ -15,9 +16,9 @@ namespace backend.Infrastructure.Database
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-           .AddJsonFile("appsettings.json")
-           .Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("diplomappdb"));
+           //.AddJsonFile("appsettings.json")
+           .Build();            
+            optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
         }
     }
 }
