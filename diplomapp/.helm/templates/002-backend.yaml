@@ -56,3 +56,4 @@ data:
       "ConnectionStrings":{"diplomappdb":
       {{ .Values.global.sql | indent 8 }}
     }
+    }
