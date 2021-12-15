@@ -164,7 +164,9 @@ kubectl apply -f aks-hello-world-one.yaml --namespace ingress-basic
 kubectl apply -f aks-hello-world-two.yaml --namespace ingress-basic
 kubectl apply -f aks-hello-world-ingress.yaml --namespace ingress-basic
 
+
 kubectl get certifi'cate --namespace ingress-basic
+
 helm list --namespace ingress-basic
 
 https://hello-world-ingress.asis.org.ru

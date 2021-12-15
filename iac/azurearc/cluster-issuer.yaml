@@ -5,7 +5,10 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: letsencrypt@asis.org.ru
+
+
+    email: MY_EMAIL_ADDRESS1
+
     privateKeySecretRef:
       name: letsencrypt
     solvers:
