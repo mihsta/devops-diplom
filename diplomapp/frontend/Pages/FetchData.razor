@@ -54,7 +54,7 @@ else
     protected override async Task OnInitializedAsync()
     {       
 
-        MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks");
+        MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks"); 
 
     }  
 }
