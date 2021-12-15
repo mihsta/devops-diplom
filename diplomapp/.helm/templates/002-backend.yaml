@@ -53,7 +53,5 @@ data:
     {
       "Logging":{"LogLevel":{"Default":"Information","Microsoft.AspNetCore":"Warning"}},
       "AllowedHosts":"*",
-      "ConnectionStrings":{"diplomappdb":
-      {{ .Values.global.sql | indent 8 }}
-    }
+      "ConnectionStrings":{"diplomappdb":{{ .Values.global.sql | indent 8 }}}
     }
