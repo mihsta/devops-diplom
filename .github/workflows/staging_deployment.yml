@@ -24,7 +24,3 @@ jobs:
           WERF_SET_ENV_URL: "global.env_url=diplomapp.staging.asis.org.ru"
           WERF_SET_ENV_SQL: "global.sql=${{ secrets.SQL_CONNECTION_STRING }}"
           WERF_DIR: "diplomapp"      
-
-      - name: Print review SQL
-        run: |
-            echo ${WERF_SET_ENV_SQL}
