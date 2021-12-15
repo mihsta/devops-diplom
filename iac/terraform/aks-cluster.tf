@@ -4,9 +4,9 @@
 # az aks browse --resource-group $(terraform output -raw resource_group_name) --name $(terraform output -raw kubernetes_cluster_name)
 
 # Impurt https://cloudskills.io/blog/terraform-azure-07
-# v
 
 resource "random_pet" "prefix" {}
+
 
 provider "azurerm" {
   features {}
@@ -29,7 +29,7 @@ resource "azurerm_kubernetes_cluster" "default" {
 
   default_node_pool {
     name            = "default"
-    node_count      = 1
+    node_count      = 2
     vm_size         = "Standard_B2s"
     os_disk_size_gb = 30
   }
