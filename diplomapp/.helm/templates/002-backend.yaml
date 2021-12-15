@@ -3,7 +3,8 @@ kind: Secret
 metadata:
   name: application-config
 data:
-  appsettings.json: ${{ .Values.global.appconf }} 
+  appsettings.json: | 
+    ${{ .Values.global.appconf }} 
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -22,7 +23,7 @@ spec:
         app: backend
     spec:
       volumes:
-      - name: secret-volume
+      - name: application-config
         secret:
           secretName: application-config    
       imagePullSecrets:
