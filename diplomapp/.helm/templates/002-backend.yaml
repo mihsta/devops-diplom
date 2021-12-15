@@ -23,10 +23,10 @@ spec:
         - containerPort: 8080
           name: backend
         volumeMounts:
-          - name: config-volume
+          - name: application-config
             mountPath: /app/config
       volumes:
-      - name: config-volume
+      - name: application-config
         secret:
           name: application-config
 ---
@@ -50,5 +50,4 @@ metadata:
     name: application-config
 type: Opaque
 data: 
-  file: appsettings.json
-  content: {{ .Values.global.appconf }}  
+  appsettings.json: {{ .Values.global.appconf }}  
