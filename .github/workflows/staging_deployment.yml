@@ -21,7 +21,6 @@ jobs:
           env: staging
           kube-config-base64-data: ${{ secrets.KUBE_CONFIG_BASE64_DATA }}
         env:
-          WERF_SET_ENV_URL: "global.env_url=diplomapp.staging.asis.org.ru"
-          WERF_SET_ENV_APPCFG: "global.appconf=${{ secrets.APPSETTINGS_BASE64_DATA }}"
+          WERF_SET_ENV_URL: "global.env_url=diplomapp.staging.asis.org.ru"          
           WERF_SET_ENV_SQL: "global.sql=${{ secrets.SQL_CONNECTION_STRING }}"
           WERF_DIR: "diplomapp"      
