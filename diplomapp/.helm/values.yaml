@@ -1,6 +1,6 @@
 host:
   production: diplomapp.asis.org.ru  
-  _default: diplomapp.dev.asis.org.ru
+  _default: diplomapp.stage.asis.org.ru
 
 production:
   service:
