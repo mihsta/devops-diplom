@@ -3,7 +3,7 @@
 <details>
   <summary>Links</summary>
 
-**[STAGE](https://diplomapp.staging.asis.org.ru)** 
+**[STAGE](https://diplomapp.dev.asis.org.ru)** 
  
 **[PROD](https://diplomapp.asis.org.ru)**
 
