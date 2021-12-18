@@ -14,7 +14,7 @@ spec:
     - {{ $host }}
     secretName: tls-secret
   rules:
-  - host: {{ .Values.global.env_url }}
+  - host: {{ $host }}
     http:
       paths:      
       - path: /
@@ -41,7 +41,7 @@ spec:
     - {{ $host }}
     secretName: tls-secret
   rules:
-  - host: {{ .Values.global.env_url }}
+  - host: {{ $host }}
     http:
       paths:      
       - path: /Track(|$)(.*)
