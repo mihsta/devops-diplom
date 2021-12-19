@@ -20,7 +20,8 @@ jobs:
         with:
           dotnet-version: '6.x'
 
-      - run: |
+      - name: Run dotnet-ef db update migrations
+        run: |
           dotnet tool install --global dotnet-ef          
           dotnet ef database update --project ./diplomapp/backend/backend.csproj
         env:
