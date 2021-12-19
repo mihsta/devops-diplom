@@ -1,4 +1,4 @@
-name: Staging Deployment
+name: Staging DB migrations
 on:
   push:
     branches: [main]    
@@ -21,4 +21,5 @@ jobs:
           dotnet-version: '6.x'
 
       - run: |
-          dotnet build ./diplomapp/diplomapp.sln   
+          dotnet tool install --global dotnet-ef          
+          dotnet ef database update --connection ${{ secrets.TEST }}
