@@ -22,4 +22,6 @@ jobs:
 
       - run: |
           dotnet tool install --global dotnet-ef          
-          dotnet ef database update --project ./diplomapp/backend/backend.csproj --connection ${{ secrets.SQL_CONNECTION_STRING  }}
+          dotnet ef database update --project ./diplomapp/backend/backend.csproj
+        env:
+          CONNECTION_STRING: ${{ secrets.SQL_CONNECTION_STRING  }}
