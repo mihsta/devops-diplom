@@ -3,7 +3,7 @@
 
 <PageTitle>Diplomapp</PageTitle>
 
-<h1>Pink Floyd 0.1.4</h1>
+<h1>Pink Floyd 0.1.5</h1>
 
 <p>Info about albums</p>
 
@@ -17,14 +17,15 @@ else
         <thead>
             <tr>
                 <th>Kind</th>
-                <th>CollectionPrice</th>
+                <th>CollectionName</th>
                 <th>TrackName</th>
                 <th>CollectionPrice</th>
                 <th>TrackPrice</th>
-                <th>ReleaseDate</th>
+                <th>PrimaryGenreName</th>                
                 <th>TrackCount</th>
                 <th>TrackNumber</th>
-                <th>PrimaryGenreName</th>
+                <th>ReleaseDate</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -32,14 +33,14 @@ else
             {
                 <tr>                    
                     <td>@track.Kind</td>
-                    <td>@track.CollectionPrice</td>
+                    <td>@track.CollectionName</td>
                     <td>@track.TrackName</td>
-                    <td>@track.CollectionPrice</td>
+                    <td>@track.CollectionPrice</td>                    
                     <td>@track.TrackPrice</td>
-                    <td>@track.ReleaseDate.ToShortDateString()</td>
+                    <td>@track.PrimaryGenreName</td>                    
                     <td>@track.TrackCount</td>
                     <td>@track.TrackNumber</td>
-                    <td>@track.PrimaryGenreName</td>
+                    <td>@track.ReleaseDate.ToShortDateString()</td>                    
                 </tr>
             }
         </tbody>

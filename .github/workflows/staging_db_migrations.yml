@@ -1,0 +1,28 @@
+name: Staging DB migrations
+on:
+  push:
+    branches: [main]    
+
+jobs:
+  staging_db_migrations:
+    name: staging_db_migrations
+    runs-on: ubuntu-latest
+    environment: stage-env
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.x'
+
+      - name: Run dotnet-ef db update migrations
+        run: |
+          dotnet tool install --global dotnet-ef          
+          dotnet ef database update --project ./diplomapp/backend/backend.csproj
+        env:
+          CONNECTION_STRING: ${{ secrets.SQL_CONNECTION_STRING }}
