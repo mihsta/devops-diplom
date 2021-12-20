@@ -29,7 +29,7 @@ namespace backend.Controllers
             return _trackService.GetAllTracksFromDb();
         }
 
-        [HttpGet("GetTracksByYear")]
+        [HttpGet("GetTracksByYear/{year}")]
         public async Task<IEnumerable<InternalMusicTrack>> GetTracksByYears(int year, CancellationToken token)
         {
             return _trackService.GetTracksByYearsFromDb(year);

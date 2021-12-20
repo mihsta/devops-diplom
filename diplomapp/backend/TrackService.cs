@@ -18,10 +18,11 @@ namespace backend
 
         public async Task UpdateAsync(string artistName, CancellationToken token)
         {            
-            for (int offset = 1; offset <= 1001; offset = offset + 200)
-            {
+            for (int offset = 1; offset <= 6001; offset = offset + 200)
+            {                
                 var tracks = await GetTracksFromApiAsync(artistName,offset, token);
-                SaveTracks(tracks);    
+                SaveTracks(tracks);
+                await Task.Delay(3500);
             }
             
         }
@@ -54,7 +55,7 @@ namespace backend
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.MusicTracks.Load<MusicTrackDto>();
-                tracks = db.MusicTracks.ToList<MusicTrackDto>();
+                tracks = db.MusicTracks.OrderBy(o =>o.ReleaseDate.Year).ToList<MusicTrackDto>();
             }
             return Convert(tracks);
         }

@@ -3,13 +3,13 @@
 
 <PageTitle>Diplomapp</PageTitle>
 
-<h1>Pink Floyd 0.1.5</h1>
+<h1>Pink Floyd 0.1.6</h1>
 
 <p>Info about albums</p>
 
 @if (MusicTracks == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>There are no tracks...</em></p>
 }
 else
 {
@@ -53,7 +53,10 @@ else
     private IEnumerable<MusicTrack> ?MusicTracks;
 
     protected override async Task OnInitializedAsync()
-    {       
-        MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks"); 
+    {               
+          MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("http://localhost:5252/Track/GetAllTracks"); 
+          //MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks"); 
     }  
+    
 }
+

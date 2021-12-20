@@ -13,11 +13,7 @@ namespace backend.Infrastructure.Database
             //    Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-           // IConfigurationRoot configuration = new ConfigurationBuilder()
-          // .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-           //.AddJsonFile("appsettings.json")
-          // .Build();            
+        {            
             optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
         }
     }
