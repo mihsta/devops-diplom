@@ -17,10 +17,13 @@ namespace backend
 
 
         public async Task UpdateAsync(string artistName, CancellationToken token)
-        {
-            //DeleteAllTracks();
-            var tracks = await GetTracksFromApiAsync(artistName, token);
-            SaveTracks(tracks);
+        {            
+            for (int offset = 1; offset <= 1001; offset = offset + 200)
+            {
+                var tracks = await GetTracksFromApiAsync(artistName,offset, token);
+                SaveTracks(tracks);    
+            }
+            
         }
 
         public IEnumerable<int> GetAvailabeYears()
@@ -75,11 +78,12 @@ namespace backend
             return result;
         }
 
-        public async Task<IEnumerable<InternalMusicTrack>> GetTracksFromApiAsync(string artistName, CancellationToken token)
+        public async Task<IEnumerable<InternalMusicTrack>> GetTracksFromApiAsync(string artistName, int offset, CancellationToken token)
         {
             try
-            {                
-                var externalTracks = await client.GetFromJsonAsync<Root>($"https://itunes.apple.com/search?term={artistName}&limit=200&offset=1", token);
+            {              
+
+                var externalTracks = await client.GetFromJsonAsync<Root>($"https://itunes.apple.com/search?term={artistName}&limit={offset+199}&offset={offset}", token);
                 var internalTracks = new List<InternalMusicTrack>();
                 foreach (var externalTrack in externalTracks.results.Where(e => e.artistName == artistName))
                 {
