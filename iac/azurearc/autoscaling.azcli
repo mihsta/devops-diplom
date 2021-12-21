@@ -2,7 +2,7 @@ https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkth
 https://docs.microsoft.com/ru-ru/azure/aks/tutorial-kubernetes-scale?tabs=azure-cli
 
 
-kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://frontend; done"
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://10.0.168.247; done"
 
 
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
