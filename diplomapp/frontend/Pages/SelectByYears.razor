@@ -1,0 +1,96 @@
+@page "/selectbyyears"
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<PageTitle>Years</PageTitle>
+
+@if (TracksYears == null)
+{
+    <p><em>There are no tracks...</em></p>
+}
+else
+{
+<fast-select id="year" onchange=@GetTracksBySelectedYearAsync>
+@foreach (var year in TracksYears)
+    {
+    <fast-option value=@year >
+        @year
+    </fast-option>        
+    }    
+</fast-select>
+}
+
+@if (MusicTracks == null)
+{
+    <p><em>There are no tracks...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Kind</th>
+                <th>CollectionName</th>
+                <th>TrackName</th>
+                <th>CollectionPrice</th>
+                <th>TrackPrice</th>
+                <th>PrimaryGenreName</th>                
+                <th>TrackCount</th>
+                <th>TrackNumber</th>
+                <th>ReleaseDate</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var track in MusicTracks)
+            {
+                <tr>                    
+                    <td>@track.Kind</td>
+                    <td>@track.CollectionName</td>
+                    <td>@track.TrackName</td>
+                    <td>@track.CollectionPrice</td>                    
+                    <td>@track.TrackPrice</td>
+                    <td>@track.PrimaryGenreName</td>                    
+                    <td>@track.TrackCount</td>
+                    <td>@track.TrackNumber</td>
+                    <td>@track.ReleaseDate.ToShortDateString()</td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {    
+   
+    private IEnumerable<int> ?TracksYears;
+    private IEnumerable<MusicTrack> ?MusicTracks;
+
+    private async Task GetTracksBySelectedYearAsync(ChangeEventArgs e)
+    {   
+         if (HostEnvironment.Environment.ToString() != "Development") {
+            MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetTracksByYear/" + e.Value.ToString()); 
+        }
+        else
+        {
+            MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("http://localhost:5252/Track/GetTracksByYear/" + e.Value.ToString());
+            Console.WriteLine("It is definitely: " + e.Value.ToString());
+        };              
+        
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {       
+        if (HostEnvironment.Environment.ToString() != "Development") {
+            TracksYears = await Http.GetFromJsonAsync<IEnumerable<int>>("/Track/GetAvailabeYears"); 
+        }
+        else
+        {
+            TracksYears = await Http.GetFromJsonAsync<IEnumerable<int>>("http://localhost:5252/Track/GetAvailabeYears");
+            Console.WriteLine("It is definitely gets all years");
+        };              
+    }   
+    
+}
+

@@ -1,23 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend", "frontend\frontend.csproj", "{879FAF18-751B-42F4-AFD0-D8E7FB74F8E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "frontend", "frontend\frontend.csproj", "{879FAF18-751B-42F4-AFD0-D8E7FB74F8E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{ABA51B2C-3C16-446F-B934-F45891E3AABB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend", "backend\backend.csproj", "{ABA51B2C-3C16-446F-B934-F45891E3AABB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend.Tests", "backend.Tests\backend.Tests.csproj", "{A90FCFBF-6547-4BDF-AC2B-B8ECBAF3319D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend.Tests", "backend.Tests\backend.Tests.csproj", "{A90FCFBF-6547-4BDF-AC2B-B8ECBAF3319D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend.Tests", "frontend.Tests\frontend.Tests.csproj", "{246E517E-A641-486B-BB21-37B18A6534CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "frontend.Tests", "frontend.Tests\frontend.Tests.csproj", "{246E517E-A641-486B-BB21-37B18A6534CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{879FAF18-751B-42F4-AFD0-D8E7FB74F8E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +33,11 @@ Global
 		{246E517E-A641-486B-BB21-37B18A6534CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{246E517E-A641-486B-BB21-37B18A6534CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{246E517E-A641-486B-BB21-37B18A6534CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAD0A5E8-D4F2-4D63-9ED5-F3148A6A5C47}
 	EndGlobalSection
 EndGlobal

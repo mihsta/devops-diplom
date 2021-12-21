@@ -17,7 +17,7 @@ namespace backend.Controllers
             _trackService = trackService;
         }
 
-        [HttpGet("GetAvailabeYears/years")]
+        [HttpGet("GetAvailabeYears")]
         public async Task<IEnumerable<int>> GetAvailabeYears(CancellationToken token)
         {
             return _trackService.GetAvailabeYears();
@@ -29,7 +29,7 @@ namespace backend.Controllers
             return _trackService.GetAllTracksFromDb();
         }
 
-        [HttpGet("GetTracksByYear")]
+        [HttpGet("GetTracksByYear/{year}")]
         public async Task<IEnumerable<InternalMusicTrack>> GetTracksByYears(int year, CancellationToken token)
         {
             return _trackService.GetTracksByYearsFromDb(year);
@@ -41,7 +41,7 @@ namespace backend.Controllers
             _trackService.DeleteAllTracks();
         }
 
-        [HttpPost("UpdateTracks")]
+        [HttpGet("UpdateTracks/{artistName}")]
         public async Task UpdateTracks(string artistName, CancellationToken token)
         {
             _trackService.UpdateAsync(artistName, token);
