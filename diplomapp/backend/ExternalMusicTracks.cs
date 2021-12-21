@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace backend
-{
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+{    
 
     public class Root
     {

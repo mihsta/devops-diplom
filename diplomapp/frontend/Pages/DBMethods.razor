@@ -1,0 +1,59 @@
+@page "/dbmethods"
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<PageTitle>Database methods</PageTitle>
+@if (LastSubmitResult != null)
+{
+  <h4>
+    @LastSubmitResult
+  </h4>
+}
+<form onsubmit=@FormSubmitted>  
+  <input type="text" @bind="@artistName" @oninput="@((e) => { artistName=(string)e.Value;})" />
+  <input type="submit" class="btn btn-primary" value="Update from api" />
+</form>
+
+<p></p>
+<button onclick=@DeleteTracksAsync class="btn btn-danger" >Drop database</button>
+ @code {
+    private string artistName {get;set;} = "Pink Floyd";
+
+    private int response {get;set;}
+
+    string LastSubmitResult;
+   void FormSubmitted()
+   {
+      UpdateTracksAsync(artistName);      
+      LastSubmitResult = "Database updated for: " + artistName;
+   }
+
+
+    private async Task DeleteTracksAsync()
+    {   
+         if (HostEnvironment.Environment.ToString() != "Development") {
+            await Http.DeleteAsync("/Track/DeleteTracks");             
+        }
+        else
+        {
+           await Http.DeleteAsync("http://localhost:5252/Track/DeleteTracks");
+           Console.WriteLine("It is definitely deleted");
+        };
+        LastSubmitResult = "Database deleted";
+    }   
+        private async Task UpdateTracksAsync(string artistName)
+    {           
+         if (HostEnvironment.Environment.ToString() != "Development") {
+            await Http.GetFromJsonAsync<int>("/Track/UpdateTracks/"+artistName); 
+        }
+        else
+        {
+            await Http.GetFromJsonAsync<int>("http://localhost:5252/Track/UpdateTracks/" + artistName);
+            Console.WriteLine("It is definitely update db from api about: " + artistName);
+        };              
+        
+
+    }
+
+ } 
