@@ -1,9 +1,11 @@
 @page "/fetchdata"
 @inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
 
 <PageTitle>Diplomapp</PageTitle>
 
-<h1>Pink Floyd 0.1.6</h1>
+<h1>Pink Floyd 0.1.6.1</h1>
 
 <p>Info about albums</p>
 
@@ -53,9 +55,14 @@ else
     private IEnumerable<MusicTrack> ?MusicTracks;
 
     protected override async Task OnInitializedAsync()
-    {               
-          MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("http://localhost:5252/Track/GetAllTracks"); 
-          //MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks"); 
+    {       
+        if (HostEnvironment.Environment.ToString() != "Development") {
+            MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("/Track/GetAllTracks"); 
+        }
+        else
+        {
+            MusicTracks = await Http.GetFromJsonAsync<IEnumerable<MusicTrack>>("http://localhost:5252/Track/GetAllTracks");
+        };              
     }  
     
 }

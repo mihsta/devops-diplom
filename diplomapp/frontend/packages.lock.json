@@ -21,6 +21,15 @@
         "resolved": "6.0.0",
         "contentHash": "SNnACFWaRSx5o0vnoU2pBTKgfv5LzlwC07H2nBTpq23hj0lZZS1XBiU8heCVxGKsmLYMb+wvxZgyKDICFAZvWQ=="
       },
+      "Microsoft.Fast.Components.FluentUI": {
+        "type": "Direct",
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "bKhN9ExRxaSpjvHxSA5IqRma0/xTXldlxG/V3AaSba1ha2Do7sIb/0F/vio2HD3yf/SEEQwz2/Ex2N1vs0Co8w==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        }
+      },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",
         "resolved": "6.0.0",

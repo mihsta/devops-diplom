@@ -1,0 +1,51 @@
+@page "/years"
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<PageTitle>Diplomapp</PageTitle>
+
+<h1>Pink Floyd 0.1.6.1</h1>
+
+<p>Info about albums</p>
+
+@if (TracksYears == null)
+{
+    <p><em>There are no tracks...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var year in TracksYears)
+            {
+                <tr>                    
+                    <td>@year.TrackYear</td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {    
+    private IEnumerable<MusicYear> ?TracksYears;
+
+    protected override async Task OnInitializedAsync()
+    {       
+        if (HostEnvironment.Environment.ToString() != "Development") {
+            TracksYears = await Http.GetFromJsonAsync<IEnumerable<MusicYear>>("/Track/GetAvailabeYears"); 
+        }
+        else
+        {
+            TracksYears = await Http.GetFromJsonAsync<IEnumerable<MusicYear>>("http://localhost:5252/Track/GetAvailabeYears");
+        };              
+    }  
+    
+}
+

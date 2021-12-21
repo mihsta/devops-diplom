@@ -17,7 +17,7 @@ namespace backend.Controllers
             _trackService = trackService;
         }
 
-        [HttpGet("GetAvailabeYears/years")]
+        [HttpGet("GetAvailabeYears")]
         public async Task<IEnumerable<int>> GetAvailabeYears(CancellationToken token)
         {
             return _trackService.GetAvailabeYears();
