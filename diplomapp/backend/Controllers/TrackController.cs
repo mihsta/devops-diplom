@@ -41,7 +41,7 @@ namespace backend.Controllers
             _trackService.DeleteAllTracks();
         }
 
-        [HttpPost("UpdateTracks")]
+        [HttpGet("UpdateTracks/{artistName}")]
         public async Task UpdateTracks(string artistName, CancellationToken token)
         {
             _trackService.UpdateAsync(artistName, token);
