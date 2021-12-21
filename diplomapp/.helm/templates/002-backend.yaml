@@ -27,10 +27,10 @@ spec:
           name: backend
         resources:
           limits:
-            memory: 55Gi
+            memory: 128Mi
           requests:
-            cpu: "10"
-            memory: 55Gi
+            cpu: "100m"
+            memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
