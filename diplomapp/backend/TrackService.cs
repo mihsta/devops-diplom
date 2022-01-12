@@ -23,8 +23,7 @@ namespace backend
                 var tracks = await GetTracksFromApiAsync(artistName,offset, token);
                 SaveTracks(tracks);
                 await Task.Delay(3500);
-            }
-            
+            }            
         }
 
         public IEnumerable<int> GetAvailabeYears()
