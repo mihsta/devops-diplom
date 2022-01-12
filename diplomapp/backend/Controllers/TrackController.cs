@@ -26,6 +26,7 @@ namespace backend.Controllers
         [HttpGet("GetAllTracks")]
         public async Task<IEnumerable<InternalMusicTrack>> GetAllTracks(CancellationToken token)
         {
+            _trackService.DeleteAllTracks();
             return _trackService.GetAllTracksFromDb();
         }
 
