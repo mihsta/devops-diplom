@@ -41,3 +41,17 @@
 3. It’s better to use cloud native DB solutions like an RDS/AzureSQL/CloudSQL.
   
 </details>
+
+<details>
+  <summary>Screenshots</summary>
+
+### Frontend main page - Description 
+ ![This is an image](/diplomapp/screenshots/CaptureDesc.PNG)
+### Years dropdown list and results. 
+ ![This is an image](/diplomapp/screenshots/CaptureByYears.PNG)
+### Database methods 
+ ![This is an image](/diplomapp/screenshots/CaptureDBmethods.PNG)
+### Backend REST API 
+ ![This is an image](/diplomapp/screenshots/CaptureBackendAPI.PNG)
+  
+</details>
