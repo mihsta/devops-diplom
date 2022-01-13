@@ -244,6 +244,14 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
+      "Microsoft.Fast.Components.FluentUI": {
+        "type": "Transitive",
+        "resolved": "1.1.0",
+        "contentHash": "bKhN9ExRxaSpjvHxSA5IqRma0/xTXldlxG/V3AaSba1ha2Do7sIb/0F/vio2HD3yf/SEEQwz2/Ex2N1vs0Co8w==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        }
+      },
       "Microsoft.JSInterop": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -1314,7 +1322,8 @@
       "frontend": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.AspNetCore.Components.WebAssembly": "6.0.0"
+          "Microsoft.AspNetCore.Components.WebAssembly": "6.0.0",
+          "Microsoft.Fast.Components.FluentUI": "1.1.0"
         }
       }
     }

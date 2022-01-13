@@ -54,6 +54,6 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: frontend
-  targetCPUUtilizationPercentage: 50 # target CPU utilization
+  targetCPUUtilizationPercentage: 70 # target CPU utilization
 
 ---

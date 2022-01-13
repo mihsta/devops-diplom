@@ -23,8 +23,7 @@ namespace backend
                 var tracks = await GetTracksFromApiAsync(artistName,offset, token);
                 SaveTracks(tracks);
                 await Task.Delay(3500);
-            }
-            
+            }            
         }
 
         public IEnumerable<int> GetAvailabeYears()
@@ -33,7 +32,7 @@ namespace backend
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.MusicTracks.Load<MusicTrackDto>();
-                years = db.MusicTracks.Select(t => t.ReleaseDate.Year).Distinct().ToList<int>();
+                years = db.MusicTracks.Select(t => t.ReleaseDate.Year).Distinct().OrderBy(t => t).ToList<int>();
             }
             return years;
         }
@@ -44,7 +43,7 @@ namespace backend
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.MusicTracks.Load<MusicTrackDto>();
-                tracks = db.MusicTracks.Where(s => s.ReleaseDate.Year == year).OrderByDescending(o => o.TrackPrice).ToList<MusicTrackDto>();
+                tracks = db.MusicTracks.Where(s => s.ReleaseDate.Year == year).Distinct().OrderByDescending(o => o.TrackPrice).ToList<MusicTrackDto>();
             }
             return Convert(tracks);
         }
@@ -55,7 +54,7 @@ namespace backend
             using (ApplicationContext db = new ApplicationContext())
             {
                 db.MusicTracks.Load<MusicTrackDto>();
-                tracks = db.MusicTracks.OrderBy(o =>o.ReleaseDate.Year).ToList<MusicTrackDto>();
+                tracks = db.MusicTracks.OrderBy(o =>o.ReleaseDate.Year).Distinct().ToList<MusicTrackDto>();
             }
             return Convert(tracks);
         }

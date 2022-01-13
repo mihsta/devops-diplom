@@ -27,7 +27,7 @@ spec:
           name: backend
         resources:
           limits:
-            memory: 64Mi
+            memory: 128Mi
           requests:
             cpu: "25m"
             memory: 64Mi
@@ -57,4 +57,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: backend
-  targetCPUUtilizationPercentage: 50 # target CPU utilization
+  targetCPUUtilizationPercentage: 70 # target CPU utilization
