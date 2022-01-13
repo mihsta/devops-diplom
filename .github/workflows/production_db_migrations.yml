@@ -4,10 +4,10 @@ on:
     branches: [production]    
 
 jobs:
-  staging_db_migrations:
-    name: staging_db_migrations
+  production_db_migrations:
+    name: production_db_migrations
     runs-on: ubuntu-latest
-    environment: stage-env
+    environment: prod-env
     steps:
 
       - name: Checkout code
