@@ -17,3 +17,7 @@ helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard
   kubectl -n kubernetes-dashboard port-forward $POD_NAME 8443:8443
 
   https://ealebed.github.io/posts/2019/%D0%B7%D0%BD%D0%B0%D0%BA%D0%BE%D0%BC%D1%81%D1%82%D0%B2%D0%BE-%D1%81-kubernetes-%D1%87%D0%B0%D1%81%D1%82%D1%8C-19-horizontalpodautoscaler/
+
+
+  .\hey_windows_amd64.exe -n 100000 -c 100 -m GET https://diplomapp.stage.asis.org.ru/
+  .\hey_windows_amd64.exe -n 100000 -c 100 -m GET https://diplomapp.stage.asis.org.ru/Track/GetAvailabeYears
