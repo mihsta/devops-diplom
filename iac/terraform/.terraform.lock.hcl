@@ -2,22 +2,21 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/azurerm" {
-  version     = "2.91.0"
-  constraints = "2.91.0"
+  version     = "2.93.1"
+  constraints = "2.93.1"
   hashes = [
-    "h1:FD9MUqGFEWy1SfkzacwRolsrNXoqBgR3avVz0wpW+nA=",
-    "h1:UbvBMXdNy9jjEDnYLeWS38Jca2bz6wv+EUzFsUnZ9Bo=",
-    "zh:17102231bc42ac91260489377fb0344408185f9233f126b825c0d0bdc873c8ec",
-    "zh:2454e0683fd8b230c7f30da2afc26bb0e9d699b85409d175a25cd094e4bf7089",
-    "zh:276fdae42310057bc7847ff4af6bb441408153af2ad72f8931145da21072ba8a",
-    "zh:29fd177efd83807acaadc788cbf151e0ed19275b00c7600e1b72316f00e0f1ea",
-    "zh:5d5ec15bbd38fa4d50074ff530e8851b06eeb08048666cde5096d44eeb495e9c",
-    "zh:7974ae42bdb7f9104c1477760d7227243a34087526b4d3eea138f3110b10fd58",
-    "zh:a9fd00320e15c53061556e0dd5818d7e0ca4af0713554dced1ede819350edd9a",
-    "zh:d8a1a3294faabfe0722ed5e553f054a92b2dc03b7f479ca58d67d36621289ce4",
-    "zh:ec4e798182bde6a9d89869c458d36b02d3acdd7ce118c91e8af2b86f082bf5e0",
-    "zh:fb1b3f126f823cb4b6e9018136562e9c28f65732ef0d0f11c18d04117c7ae7a3",
-    "zh:ff0ead2fe3c4c5d597fdc3f2183407ab971f2f435a887ff7af7dac9ae3fa6e86",
+    "h1:fyZmKbde5js5TcUxHyFDav2uaW+ki9nCy74O5s+KSwo=",
+    "zh:3349153584e23e47fd2395ac710298b66ab86d9f0c870d5326b3d25a8129bbdf",
+    "zh:74c9afeb7db9d9573042f9dcfe66d56216b2bc9c799cf003a581c09fb210e4ce",
+    "zh:78dad9f395b72fc5877923e226b95b568df909b102c6a329cd0a1834c10d4c9a",
+    "zh:8241a93471c62238ff03683ba93b24c23aa04bdb38d6baadd08f1b791ee9628d",
+    "zh:8b6759b9dfd759d1097d593e27860d0179bc6f0b724265b0c6773a605d08e863",
+    "zh:972fc908bb6fa651a0d0643914ea0cdc2082740ccb2602d5c0b22eea3f1b0794",
+    "zh:c080ef2f19175feaafed22bacb4c939ebb4fe772354338514e4aab5950a88b1d",
+    "zh:d3c7dde2541f541cc9f5ef022257999d5f194adc852428315d70bd1224cc04dd",
+    "zh:dca3974ba24cb1323a8e32004fd9c0a4e11042189b95cf6c7cd4a67aba2a20bf",
+    "zh:e8dafb5ca2c8e4b46e970d46edc19f9d568ca12faad0856ee911b3bbeae7911b",
+    "zh:f486f670d89e46e4cf6d81cfb5c730f0246207a1114a9a01982f27a37f32a2aa",
   ]
 }
 
